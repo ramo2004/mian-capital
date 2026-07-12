@@ -238,7 +238,6 @@ function StagePanel({ active, name, panel }) {
         <img src={panel.image} alt={panel.title} />
       </div>
       <div className="stage-copy">
-        <p className="dash-label">{panel.label}</p>
         <h4>{panel.title}</h4>
       </div>
     </div>
@@ -766,9 +765,6 @@ function App() {
     const scope = page.current;
     if (!scope) return undefined;
 
-    const activePanel = scope.querySelector(
-      `.stage-card[data-panel="${activeStep}"]`,
-    );
     const activeStepElement = scope.querySelector(
       `.step[data-step="${activeStep}"]`,
     );
@@ -780,23 +776,6 @@ function App() {
       return undefined;
     }
 
-    if (activePanel) {
-      const panelChildren = Array.from(activePanel.children);
-      gsap.killTweensOf(panelChildren);
-      gsap.fromTo(
-        panelChildren,
-        { autoAlpha: 0, y: 12 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.38,
-          ease: "power3.out",
-          stagger: 0.045,
-          delay: 0.08,
-        },
-      );
-    }
-
     if (activeStepElement) {
       const stepNumber = activeStepElement.querySelector(".step-number");
       gsap.fromTo(
@@ -806,11 +785,7 @@ function App() {
       );
     }
 
-    return () => {
-      if (activePanel) {
-        gsap.killTweensOf(Array.from(activePanel.children));
-      }
-    };
+    return undefined;
   }, [activeStep, reducedMotion]);
 
   useEffect(() => {
