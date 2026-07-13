@@ -54,6 +54,7 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 ## Current Blockers / Unknowns
 
 - ChatGPT Sites project creation is temporarily blocked by the provider/workspace 300-second rate window. Retry only after a meaningful cooldown; do not create a duplicate project if a later `list_sites` call shows `Mian Capital`.
+- Root-cause investigation: the exact `2400 requests per 300 seconds` message is not documented as a Sites user quota, the account's Sites list is empty, and only three create calls were made over several minutes. This rules out personal Sites history/site-count limits and strongly indicates a shared connector gateway, workspace, or provider-service rate bucket. OpenAI's public status history shows no Sites-specific incident, so the precise bucket owner requires OpenAI support/internal telemetry to confirm.
 - Before launch, the user must supply the founder's name, professional biography, credentials, and portrait.
 - Advisory and Shariah-screening language should receive appropriate legal/compliance review before production use.
 
