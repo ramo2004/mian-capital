@@ -2,7 +2,21 @@
 
 ## Goal + Current Status
 
-Upgrade the Mian Capital Islamic finance landing page from static HTML to React/Vite with restrained shader background, GSAP motion, and selective neo-brutalist component polish. The page is positioned as a smaller Islamic investment advising/report service, not a dashboard platform. Current state has a Helvetica-style animated Mian Capital wordmark, an explicit 1:1 journey row layout, a holdings-report section with a single paper/PDF-style sample report, a separate `/team` page with founder placeholders, and an intake modal that submits in-page to `/api/intake`. The GitHub repo is public at `https://github.com/ramo2004/mian-capital`; local `main` tracks `origin/main`.
+Review the Mian Capital React/Vite site end-to-end and define a stronger premium advisory direction before any implementation. Review is complete and no product code has been changed. The recommended direction is a calm premium advisory system with editorial/report details, replacing the WebGL shader and reducing the mixed neo-brutalist/AI-illustration language. Awaiting user approval before implementation. The GitHub repo is public at `https://github.com/ramo2004/mian-capital`; local `main` tracks `origin/main`.
+
+## Design Review Milestone (2026-07-12)
+
+- Strong foundation: warm cream, navy, restrained green, clear service sequence, and the paper report concept are appropriate for an Islamic advisory practice.
+- Primary weakness: the site mixes a sticker-like animated logo, hard-offset shadows, glossy AI-style journey art, generic scroll reveals, and a WebGL wash. It feels like a finance startup prototype rather than a quiet, credentialed advisory practice.
+- Replace the hero shader rather than retune it. Headed Chromium repeatedly rendered a black compositing band through the sticky header after the shader had been active, including after routing to `/team`; the shader also contributes a 1.1 MB built chunk.
+- Preferred visual direction: calm premium advisory, using an off-white/navy/olive palette, editorial typography, fine rules, real report/document fragments, subtle paper grain or linework, and low-amplitude CSS/SVG motion.
+- Hero: reduce the competing second headline, replace the pseudo-report card with a more credible document excerpt or advisor/client artifact, and use a consultation-oriented CTA with response-time reassurance.
+- Journey: remove the glossy generated still-life images and card-within-card treatment; use one consistent editorial sequence with real artifacts, precise captions, and restrained progressive disclosure.
+- Holdings report: keep the paper metaphor but make it a true report page with client/date/methodology, ticker rows, rationale, screening standard/source, footnotes, and advisor notes. Avoid an unsupported headline compliance percentage.
+- Team: not launch-ready. A real portrait, full name/title, credentials, experience, advisory philosophy, location/availability, and compliance disclosures are required for credibility.
+- Intake: good visual baseline, but the default-selected service is presumptive, phone is not marked optional, mobile requires excessive scrolling, success leaves the full form visible, and the local error state offers no recovery path or direct contact fallback.
+- Mobile: no navigation beyond the logo, oversized headings create long scroll length, the journey repeats full text plus large images, and the modal CTA falls well below the first viewport.
+- Motion: consolidate to a small system (hero entrance, section reveal, document/detail emphasis). Remove continuous wordmark animation and generic animation on nearly every card; keep reduced-motion support.
 
 ## Key Decisions
 
@@ -57,6 +71,9 @@ Upgrade the Mian Capital Islamic finance landing page from static HTML to React/
 
 ## Commands Run + Outcomes
 
+- Design-review verification (2026-07-12): `npm install`, `npm run format:check`, `npm run build`, and `git diff --check` passed. Build still reports the expected 1.1 MB shader chunk warning. No product code was changed.
+- Rendered design review (2026-07-12): headed Chromium at `1440x1000` and `390x844` covered the home hero, all journey states, holdings report, `/team`, intake default/error states, sticky header, footer, and console. Screenshots are in `output/playwright/`. Console was clean during ordinary navigation; the deliberate local Vite intake submission produced the expected failed `/api/intake` request because Vite does not serve the serverless function.
+- Rendered risk found: after the WebGL shader had been active, headed Chromium repeatedly captured a black compositing band through the sticky header on desktop and mobile, persisting on `/team`. Treat replacement of the WebGL hero as a priority rather than a cosmetic preference.
 - Boot sequence: `cat HANDOFF.md`, `git status`, `git diff --stat`; passed. Worktree already contained the uncommitted React/Vite conversion changes.
 - `npm install`; passed, zero vulnerabilities.
 - `npm run format:check`; passed after advisory revamp.
@@ -104,7 +121,7 @@ Upgrade the Mian Capital Islamic finance landing page from static HTML to React/
 
 ## Current Blockers / Unknowns
 
-- No code blocker.
+- Implementation is intentionally blocked on user approval of the visual direction and prioritized plan.
 - Production email delivery requires a Resend API key and a verified sender configured as `RESEND_API_KEY` and `INTAKE_FROM_EMAIL`.
 - The production build warns that the dynamically imported shader chunk is larger than 500 kB. Further reduction would require replacing `@shadergradient/react` with CSS/canvas-native background animation.
 
@@ -121,9 +138,9 @@ Upgrade the Mian Capital Islamic finance landing page from static HTML to React/
 
 ## Next Steps Checklist
 
-- Review the polished page at `http://127.0.0.1:5188/`.
-- Commit the React/Vite upgrade when ready.
-- Before production launch, review legal/compliance copy and replace placeholder account/product data.
+- Obtain user approval for one of the three proposed visual directions; recommended: calm premium advisory with editorial/report details.
+- After approval, implement in phases: visual foundation and shader removal; hero/header/brand; journey/report; team/intake; motion/mobile/accessibility QA.
+- Before production launch, replace all founder and sample-data placeholders and obtain legal/compliance review of advisory and Shariah-screening claims.
 
 ## Verification Plan
 
