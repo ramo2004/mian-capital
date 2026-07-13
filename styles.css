@@ -755,17 +755,21 @@ svg {
 }
 
 .action-list li {
-  display: grid;
-  grid-template-columns: 46px 1fr;
+  position: relative;
+  display: block;
   align-items: center;
-  padding: 14px 0;
+  padding: 14px 0 14px 22px;
   border-bottom: 1px solid var(--line);
 }
 
-.action-list span {
-  color: var(--gold);
-  font-family: var(--serif);
-  font-size: 22px;
+.action-list li::before {
+  content: "";
+  position: absolute;
+  top: 22px;
+  left: 0;
+  width: 8px;
+  height: 1px;
+  background: var(--gold);
 }
 
 .action-list p {
@@ -822,7 +826,7 @@ svg {
 
 .full-report-heading {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
+  grid-template-columns: 1fr;
   gap: 12px 50px;
   padding-block: 38px;
 }
@@ -843,13 +847,6 @@ svg {
   font-size: clamp(36px, 4.5vw, 58px);
   font-weight: 400;
   line-height: 1;
-}
-
-.full-report-heading > span {
-  align-self: end;
-  color: var(--ink-soft);
-  font-size: 15px;
-  line-height: 1.65;
 }
 
 .report-table {
@@ -914,43 +911,6 @@ svg {
   font-size: 9px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-.report-deliverables {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin-top: 70px;
-  border-block: 1px solid var(--line);
-}
-
-.report-deliverables article {
-  min-height: 190px;
-  padding: 32px;
-  border-right: 1px solid var(--line);
-}
-
-.report-deliverables article:last-child {
-  border-right: 0;
-}
-
-.report-deliverables span {
-  color: var(--gold);
-  font-family: var(--serif);
-  font-size: 28px;
-}
-
-.report-deliverables h3 {
-  margin: 22px 0 0;
-  font-family: var(--serif);
-  font-size: 26px;
-  font-weight: 400;
-}
-
-.report-deliverables p {
-  margin: 9px 0 0;
-  color: var(--ink-soft);
-  font-size: 13px;
-  line-height: 1.55;
 }
 
 .team-page {
@@ -1562,19 +1522,8 @@ svg {
     text-align: right;
   }
 
-  .report-lower,
-  .report-deliverables {
+  .report-lower {
     grid-template-columns: 1fr;
-  }
-
-  .report-deliverables article {
-    min-height: 0;
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .report-deliverables article:last-child {
-    border-bottom: 0;
   }
 
   .team-hero {

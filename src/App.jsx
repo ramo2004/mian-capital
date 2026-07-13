@@ -119,7 +119,7 @@ function ReviewDocument({ compact = false }) {
     <div className={`review-document${compact ? " is-compact" : ""}`}>
       <div className="document-masthead">
         <span>Mian Capital</span>
-        <span>Sample review · 01</span>
+        <span>Sample review</span>
       </div>
       <div className="document-title-row">
         <div>
@@ -209,7 +209,6 @@ function AccountArtifact() {
     <div className="artifact-sheet account-artifact">
       <div className="artifact-header">
         <span>Account brief</span>
-        <span>01</span>
       </div>
       <h4>Match the account to the goal.</h4>
       <div className="account-options">
@@ -236,7 +235,6 @@ function ScreeningArtifact() {
     <div className="artifact-sheet screening-artifact">
       <div className="artifact-header">
         <span>Holdings screen</span>
-        <span>02</span>
       </div>
       <h4>Review each holding in context.</h4>
       <div className="screening-table">
@@ -257,7 +255,6 @@ function ScreeningArtifact() {
           <span className="status status-action">Action</span>
         </div>
       </div>
-      <p className="artifact-caption">Illustrative classifications only</p>
     </div>
   );
 }
@@ -267,24 +264,19 @@ function PlanArtifact() {
     <div className="artifact-sheet plan-artifact">
       <div className="artifact-header">
         <span>Advisor notes</span>
-        <span>03</span>
       </div>
       <h4>Priorities you can act on.</h4>
-      <ol className="action-list">
+      <ul className="action-list">
         <li>
-          <span>01</span>
           <p>Confirm the account structure.</p>
         </li>
         <li>
-          <span>02</span>
           <p>Resolve the flagged exposure.</p>
         </li>
         <li>
-          <span>03</span>
-          <p>Set the ongoing review cadence.</p>
+          <p>Agree on how the portfolio will be reviewed over time.</p>
         </li>
-      </ol>
-      <p className="artifact-caption">Example action summary</p>
+      </ul>
     </div>
   );
 }
@@ -347,12 +339,8 @@ function FullReport() {
         </div>
       </div>
       <div className="full-report-heading">
-        <p>Portfolio review · 01</p>
+        <p>Portfolio review</p>
         <h3>Screening summary</h3>
-        <span>
-          A concise record of what was reviewed, why it matters, and what to do
-          next.
-        </span>
       </div>
       <div className="report-table">
         <div className="report-table-heading">
@@ -413,23 +401,6 @@ function ReportSection() {
         </p>
       </div>
       <FullReport />
-      <div className="report-deliverables reveal">
-        <article>
-          <span>01</span>
-          <h3>Screening</h3>
-          <p>What was reviewed and where attention is needed.</p>
-        </article>
-        <article>
-          <span>02</span>
-          <h3>Rationale</h3>
-          <p>Why each conclusion matters to the portfolio.</p>
-        </article>
-        <article>
-          <span>03</span>
-          <h3>Next action</h3>
-          <p>A short, prioritized list of decisions to make.</p>
-        </article>
-      </div>
     </section>
   );
 }
@@ -478,7 +449,7 @@ function Footer({ onOpenInquiry }) {
     <footer className="site-footer section-shell">
       <div>
         <Brand />
-        <p>Islamic investment guidance, clearly explained.</p>
+        <p>Invest Islamically.</p>
       </div>
       <div className="footer-links">
         <a href="/#journey">Our approach</a>

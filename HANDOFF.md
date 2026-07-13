@@ -2,7 +2,7 @@
 
 ## Goal + Current Status
 
-Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand. The redesign is complete on `main` and passes formatting, production build, desktop/mobile browser QA, form-state QA, and overflow checks. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
+Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand, then deploy it publicly with ChatGPT Sites. The redesign and requested cadence/copy cleanup pass formatting, production build, rendered QA, and overflow checks. Sites project creation is pending because the provider returned the same workspace/service rate-limit response twice; no Sites project or deployment exists yet. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
 
 ## Key Decisions
 
@@ -13,6 +13,8 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 - Reframed the primary CTA as `Request an introductory call`; retained concise reassurance and avoided adding speculative marketing sections.
 - Rebuilt the hero, journey, and holdings review around code-native advisory documents rather than dashboards or decorative imagery.
 - The report uses illustrative holding categories and explicit sample labels rather than unsupported compliance percentages or claims about real securities.
+- Only the primary journey retains `01 / 02 / 03`. Supporting artifact numbers, the numbered advisor list, the repeated report-deliverables strip, and the requested explanatory captions were removed.
+- The footer tagline is `Invest Islamically.`
 - Motion is limited to one hero sequence and restrained section reveals. Content is visible by default and `prefers-reduced-motion` remains supported.
 - Added a real mobile menu, opaque sticky-header layers, and removed modal backdrop blur after headed Chromium exposed GPU black-compositing artifacts.
 - Intake topics are initially unselected. Phone and details are explicitly optional. Mobile actions remain sticky; success replaces the form; errors preserve data, scroll into view, and offer a direct email fallback.
@@ -43,13 +45,15 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 - CI review after push: `gh run list --repo ramo2004/mian-capital --limit 10` returned no runs because no workflows exist.
 - Dependency cleanup: `npm uninstall @shadergradient/react @react-three/fiber three` — passed, zero vulnerabilities.
 - Current checks: `npm run format`, `npm run format:check`, `npm run build`, `git diff --check` — passed. Build is now 23 modules with no large shader chunk warning.
+- Cadence/copy cleanup: `rg` confirmed the requested phrases and report-deliverables selectors are absent; headed browser QA confirmed 3 journey numbers, 0 artifact-header numbers, 0 deliverable strips, the restored tagline, no overflow, and a clean console.
+- Sites discovery: official OpenAI docs confirm Sites can deploy compatible local projects and every deployment URL is production. `list_sites` returned no existing projects. Two `create_site` attempts failed before creation with `More than 2400 requests per 300 seconds reached`; no project ID or manifest was produced.
 - Fresh headed-browser QA at `1440x1000` and `390x844` — home, journey, report, Team, navigation, sticky header, mobile menu, intake default/success/error states, and footer rendered correctly.
 - Fresh console QA — 0 errors and 0 warnings during normal navigation. The only observed error was the intentional mocked `502` used to verify the recovery state.
 - Overflow QA — desktop `1425/1425` and mobile `375/375`; no horizontal overflow. Shader/canvas node count is zero.
 
 ## Current Blockers / Unknowns
 
-- No code blocker.
+- ChatGPT Sites project creation is temporarily blocked by the provider/workspace 300-second rate window. Retry only after a meaningful cooldown; do not create a duplicate project if a later `list_sites` call shows `Mian Capital`.
 - Before launch, the user must supply the founder's name, professional biography, credentials, and portrait.
 - Advisory and Shariah-screening language should receive appropriate legal/compliance review before production use.
 
@@ -61,6 +65,7 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 
 ## Next Steps Checklist
 
+- Retry Sites project creation after the rate-limit window clears, persist `.openai/hosting.json`, push the exact source state, save a version, set access to public, deploy, and verify the production URL.
 - Review the redesign visually and collect any preference-level refinements.
 - Replace the Team placeholder with supplied founder content and photography.
 - Complete legal/compliance review and production email configuration before launch.
