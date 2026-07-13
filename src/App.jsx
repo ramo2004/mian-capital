@@ -1,38 +1,45 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
-import ViewportVisual from "./components/ViewportVisual";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "./hooks/useReducedMotion";
-import journeyAccounts from "./assets/journey-accounts.png";
-import journeyGrowth from "./assets/journey-growth.png";
-import journeyScreening from "./assets/journey-screening.png";
 
-const ShaderAtmosphere = lazy(() => import("./components/ShaderAtmosphere"));
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const reportDeliverables = [
-  [
-    "Compliance snapshot",
-    "A clear summary of how your holdings screen against Shariah guidelines.",
-  ],
-  [
-    "Holdings review",
-    "Positions organized by compliant, review-needed, and avoid/watch categories.",
-  ],
-  [
-    "Action notes",
-    "Plain-English next steps so you do not have to dig through brokerage screens.",
-  ],
+const inquiryTopics = [
+  ["Portfolio screening", "Screen a portfolio"],
+  ["Investment advice", "Investment guidance"],
+  ["Open brokerage account", "Open an account"],
+  ["Shariah compliance review", "Shariah review"],
+  ["Account transfer", "Transfer an account"],
+  ["Other", "Something else"],
 ];
 
-const inquiryTopics = [
-  "Portfolio screening",
-  "Investment advice",
-  "Open brokerage account",
-  "Shariah compliance review",
-  "Account transfer",
-  "Other",
+const journeySteps = [
+  {
+    number: "01",
+    eyebrow: "Understand",
+    title: "Start with the right account.",
+    description:
+      "We begin with your goals, timeline, and current financial picture, then clarify which account type fits the job.",
+    artifact: "account",
+  },
+  {
+    number: "02",
+    eyebrow: "Review",
+    title: "Know what you own.",
+    description:
+      "We organize your holdings, apply the agreed screening approach, and explain what deserves attention.",
+    artifact: "screening",
+  },
+  {
+    number: "03",
+    eyebrow: "Advise",
+    title: "Leave with a practical plan.",
+    description:
+      "You receive clear priorities for what to keep, revisit, or change—without having to interpret a dashboard.",
+    artifact: "plan",
+  },
 ];
 
 function ArrowIcon() {
@@ -46,345 +53,441 @@ function ArrowIcon() {
 function Brand() {
   return (
     <a className="brand" href="/" aria-label="Mian Capital home">
-      <span className="brand-wordmark" aria-hidden="true">
-        <span className="brand-wordmark-main">Mian</span>
-        <span className="brand-wordmark-capital">Capital</span>
-      </span>
-      <span className="brand-copy">
-        <strong>Mian Capital</strong>
-        <small>Values-based investing</small>
-      </span>
+      <span className="brand-name">Mian Capital</span>
+      <span className="brand-rule" aria-hidden="true" />
     </a>
   );
 }
 
-function Header({ isScrolled }) {
+function Header({ isScrolled, onOpenInquiry }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <header
-      className={`site-header${isScrolled ? " is-scrolled" : ""}`}
-      aria-label="Primary navigation"
-    >
-      <Brand />
-      <nav className="desktop-nav" aria-label="Main menu">
-        <a href="/#journey">How it works</a>
-        <a href="/#features">Advisory</a>
-        <a href="/team">Team</a>
-      </nav>
+    <header className={`site-header${isScrolled ? " is-scrolled" : ""}`}>
+      <div className="header-inner">
+        <Brand />
+        <nav className="desktop-nav" aria-label="Main menu">
+          <a href="/#journey">Our approach</a>
+          <a href="/#report">Holdings review</a>
+          <a href="/team">About</a>
+        </nav>
+        <button className="header-cta" type="button" onClick={onOpenInquiry}>
+          Request a call
+          <ArrowIcon />
+        </button>
+        <button
+          className="menu-toggle"
+          type="button"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          onClick={() => setMenuOpen((current) => !current)}
+        >
+          <span />
+          <span />
+        </button>
+      </div>
+      <div
+        className={`mobile-menu${menuOpen ? " is-open" : ""}`}
+        id="mobile-menu"
+      >
+        <a href="/#journey" onClick={() => setMenuOpen(false)}>
+          Our approach
+        </a>
+        <a href="/#report" onClick={() => setMenuOpen(false)}>
+          Holdings review
+        </a>
+        <a href="/team" onClick={() => setMenuOpen(false)}>
+          About
+        </a>
+        <button
+          type="button"
+          onClick={() => {
+            setMenuOpen(false);
+            onOpenInquiry();
+          }}
+        >
+          Request an introductory call
+        </button>
+      </div>
     </header>
   );
 }
 
-function HeroReport() {
-  const reportItems = [
-    ["Open account", "Brokerage, Roth IRA, traditional IRA, or 529."],
-    ["Screen holdings", "Current portfolio or ideas you want to buy."],
-    ["Build portfolio", "Allocate, invest, and keep it growing."],
-  ];
-
+function ReviewDocument({ compact = false }) {
   return (
-    <aside className="hero-report" aria-label="Advisory report preview">
-      <div className="report-topline">
-        <p className="dash-label">Advisory report</p>
-        <span>Prepared for you</span>
+    <div className={`review-document${compact ? " is-compact" : ""}`}>
+      <div className="document-masthead">
+        <span>Mian Capital</span>
+        <span>Sample review · 01</span>
       </div>
-      <h2>Open the account. Screen the holdings. Build the portfolio.</h2>
-      <div className="report-lines">
-        {reportItems.map(([title, description]) => (
-          <div className="report-line" key={title}>
-            <span aria-hidden="true" />
-            <div>
-              <strong>{title}</strong>
-              <p>{description}</p>
-            </div>
+      <div className="document-title-row">
+        <div>
+          <p>Investment review</p>
+          <h2>Portfolio guidance</h2>
+        </div>
+        <span className="document-date">Prepared for you</span>
+      </div>
+      <div className="document-summary">
+        <p>Review focus</p>
+        <strong>Alignment, screening, and next actions</strong>
+      </div>
+      <div className="document-columns">
+        <div>
+          <p className="document-label">Review overview</p>
+          <div className="document-row">
+            <span>Account structure</span>
+            <strong>Clarified</strong>
           </div>
-        ))}
+          <div className="document-row">
+            <span>Holdings screen</span>
+            <strong>Complete</strong>
+          </div>
+          <div className="document-row">
+            <span>Priority actions</span>
+            <strong>3 notes</strong>
+          </div>
+        </div>
+        <div className="allocation-figure" aria-hidden="true">
+          <div className="allocation-ring" />
+          <div className="allocation-key">
+            <span>Core</span>
+            <span>Review</span>
+            <span>Reserve</span>
+          </div>
+        </div>
       </div>
-    </aside>
-  );
-}
-
-function Hero({ reducedMotion, onOpenInquiry }) {
-  return (
-    <section className="hero section-pad" aria-labelledby="hero-title">
-      <ViewportVisual>
-        <Suspense fallback={null}>
-          <ShaderAtmosphere variant="hero" reducedMotion={reducedMotion} />
-        </Suspense>
-      </ViewportVisual>
-      <div className="pattern pattern-hero" aria-hidden="true" />
-      <div className="hero-copy reveal">
-        <h1 id="hero-title">Build wealth with your values.</h1>
+      <div className="document-note">
+        <span>Advisor note</span>
         <p>
-          Get help setting up brokerage accounts, screening your holdings for
-          Shariah and ethical compliance, and building an investing approach
-          aligned with your goals and values.
+          Focus first on the decisions that materially affect alignment and
+          long-term goals.
         </p>
-        <div className="hero-actions" aria-label="Hero actions">
-          <button
-            className="button button-lime"
-            type="button"
-            onClick={onOpenInquiry}
-          >
-            Start investing
-            <ArrowIcon />
-          </button>
-          <a className="button button-outline" href="#journey">
-            See how it works
-            <ArrowIcon />
-          </a>
-        </div>
-      </div>
-      <div className="hero-visual reveal">
-        <HeroReport />
-      </div>
-    </section>
-  );
-}
-
-function Journey({ activeStep, reducedMotion }) {
-  const steps = [
-    {
-      name: "setup",
-      number: "01",
-      label: "Open account",
-      stepTitle: "Open your account",
-      title: "Open the account that fits your goal.",
-      image: journeyAccounts,
-      description:
-        "We help you choose the account that fits your goals, complete the application, and connect your funding source.",
-    },
-    {
-      name: "screening",
-      number: "02",
-      label: "Screen holdings",
-      stepTitle: "Review current holdings or new ideas",
-      title: "Review what you own or want to buy.",
-      image: journeyScreening,
-      description:
-        "If you already have a portfolio, we review it and suggest what to keep, trim, or rebalance around your goals. If you are starting fresh, we screen what you are considering before you buy.",
-    },
-    {
-      name: "advice",
-      number: "03",
-      label: "Build portfolio",
-      stepTitle: "Build the portfolio and let it grow",
-      title: "Build the portfolio and let it grow.",
-      image: journeyGrowth,
-      description: "Invest, monitor, and rebalance as your goals change.",
-    },
-  ];
-
-  return (
-    <section
-      className="scrolly section-pad"
-      id="journey"
-      aria-labelledby="journey-title"
-    >
-      <div className="scrolly-copy">
-        <div className="section-heading reveal">
-          <h2 id="journey-title">From review to action</h2>
-          <svg className="underline" viewBox="0 0 360 24" aria-hidden="true">
-            <path d="M8 16c76-14 151-15 344 0" />
-          </svg>
-        </div>
-      </div>
-      <div className="journey-rows" aria-live="polite">
-        {steps.map((panel) => (
-          <div className="journey-row" key={panel.name}>
-            <JourneyStep
-              activeStep={activeStep}
-              name={panel.name}
-              number={panel.number}
-              title={panel.stepTitle}
-            >
-              {panel.description}
-            </JourneyStep>
-            <StagePanel
-              active={activeStep === panel.name}
-              name={panel.name}
-              panel={panel}
-            />
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function JourneyStep({ activeStep, children, name, number, title }) {
-  return (
-    <article
-      className={`step reveal${activeStep === name ? " is-active" : ""}`}
-      data-step={name}
-    >
-      <span className="step-number">
-        <span>{number}</span>
-      </span>
-      <div className="step-body">
-        <h3>{title}</h3>
-        <p>{children}</p>
-      </div>
-    </article>
-  );
-}
-
-function StagePanel({ active, name, panel }) {
-  return (
-    <div
-      className={`stage-card${active ? " is-active" : ""}`}
-      data-panel={name}
-    >
-      <div className="stage-media">
-        <img src={panel.image} alt={panel.title} />
-      </div>
-      <div className="stage-copy">
-        <h4>{panel.title}</h4>
       </div>
     </div>
   );
 }
 
-function Features() {
+function Hero({ onOpenInquiry }) {
   return (
-    <section
-      className="features section-pad"
-      id="features"
-      aria-labelledby="features-title"
-    >
-      <div className="section-split reveal">
-        <div>
-          <p className="section-label">Holdings report</p>
-          <h2 id="features-title">
-            A simplified review of your investments, holdings, and compliance
-          </h2>
+    <section className="hero section-shell" aria-labelledby="hero-title">
+      <div className="hero-atmosphere" aria-hidden="true">
+        <span />
+        <span />
+      </div>
+      <div className="hero-copy">
+        <p className="eyebrow">Islamic investment guidance</p>
+        <h1 id="hero-title">A clearer way to invest with your values.</h1>
+        <p className="hero-intro">
+          Personal guidance for choosing the right account, reviewing your
+          portfolio, and making informed, Shariah-conscious investment
+          decisions.
+        </p>
+        <div className="hero-actions">
+          <button className="button button-primary" onClick={onOpenInquiry}>
+            Request an introductory call
+            <ArrowIcon />
+          </button>
+          <a className="button button-secondary" href="#journey">
+            See the advisory process
+            <ArrowIcon />
+          </a>
         </div>
-        <p>
-          Send over your holdings and receive a practical report. No brokerage
-          login walkthroughs, no confusing screens, and no need to interpret
-          everything yourself.
+        <p className="hero-reassurance">
+          A short introduction. No commitment required.
         </p>
       </div>
-      <div className="report-section-grid">
-        <ReportPreview />
-        <div className="advisory-cards">
-          {reportDeliverables.map(([title, description], index) => (
-            <article className="advisory-card reveal" key={title}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <h3>{title}</h3>
-              <p>{description}</p>
-            </article>
-          ))}
-        </div>
+      <div className="hero-document" aria-label="Sample investment review">
+        <ReviewDocument />
       </div>
     </section>
   );
 }
 
-function ReportPreview() {
+function AccountArtifact() {
   return (
-    <aside
-      className="report-preview reveal"
-      aria-label="Sample holdings report"
-    >
-      <div className="report-paper">
-        <div className="report-paper-header">
-          <div>
-            <p className="dash-label">Sample report</p>
-            <h3>Holdings Compliance Report</h3>
-          </div>
-          <span>PDF</span>
+    <div className="artifact-sheet account-artifact">
+      <div className="artifact-header">
+        <span>Account brief</span>
+        <span>01</span>
+      </div>
+      <h4>Match the account to the goal.</h4>
+      <div className="account-options">
+        <div>
+          <strong>Brokerage</strong>
+          <span>Flexible investing</span>
         </div>
-        <div className="report-paper-meta">
-          <span>Prepared for: Client portfolio</span>
-          <span>Review date: Sample</span>
+        <div className="is-marked">
+          <strong>Roth IRA</strong>
+          <span>Long-term retirement</span>
         </div>
-        <div className="report-paper-summary">
-          <strong>82% estimated compliant</strong>
-          <p>
-            Based on the holdings provided, most positions appear aligned. A few
-            should be reviewed before adding more capital.
-          </p>
-        </div>
-        <div className="report-paper-section">
-          <h4>Holdings review</h4>
-          {[
-            ["Large-cap ETF", "Compliant"],
-            ["Individual stock", "Needs review"],
-            ["Cash position", "Clear"],
-          ].map(([holding, status]) => (
-            <div className="report-paper-row" key={holding}>
-              <span>{holding}</span>
-              <strong>{status}</strong>
-            </div>
-          ))}
-        </div>
-        <div className="report-paper-section">
-          <h4>Action notes</h4>
-          <p>
-            Keep compliant positions, review flagged exposure, and avoid buying
-            more until the concern is clarified.
-          </p>
+        <div>
+          <strong>529</strong>
+          <span>Education planning</span>
         </div>
       </div>
-    </aside>
+      <p className="artifact-caption">Illustrative account comparison</p>
+    </div>
   );
 }
 
-function Team() {
+function ScreeningArtifact() {
+  return (
+    <div className="artifact-sheet screening-artifact">
+      <div className="artifact-header">
+        <span>Holdings screen</span>
+        <span>02</span>
+      </div>
+      <h4>Review each holding in context.</h4>
+      <div className="screening-table">
+        <div className="screening-heading">
+          <span>Holding</span>
+          <span>Review</span>
+        </div>
+        <div>
+          <strong>U.S. equity fund</strong>
+          <span className="status status-clear">Clear</span>
+        </div>
+        <div>
+          <strong>Individual equity</strong>
+          <span className="status status-review">Review</span>
+        </div>
+        <div>
+          <strong>Fixed-income fund</strong>
+          <span className="status status-action">Action</span>
+        </div>
+      </div>
+      <p className="artifact-caption">Illustrative classifications only</p>
+    </div>
+  );
+}
+
+function PlanArtifact() {
+  return (
+    <div className="artifact-sheet plan-artifact">
+      <div className="artifact-header">
+        <span>Advisor notes</span>
+        <span>03</span>
+      </div>
+      <h4>Priorities you can act on.</h4>
+      <ol className="action-list">
+        <li>
+          <span>01</span>
+          <p>Confirm the account structure.</p>
+        </li>
+        <li>
+          <span>02</span>
+          <p>Resolve the flagged exposure.</p>
+        </li>
+        <li>
+          <span>03</span>
+          <p>Set the ongoing review cadence.</p>
+        </li>
+      </ol>
+      <p className="artifact-caption">Example action summary</p>
+    </div>
+  );
+}
+
+function JourneyArtifact({ type }) {
+  if (type === "account") return <AccountArtifact />;
+  if (type === "screening") return <ScreeningArtifact />;
+  return <PlanArtifact />;
+}
+
+function Journey() {
   return (
     <section
-      className="team section-pad"
-      id="team"
-      aria-labelledby="team-title"
+      className="journey section-shell section-space"
+      id="journey"
+      aria-labelledby="journey-title"
     >
-      <div className="team-card reveal">
-        <div className="founder-photo-placeholder" aria-hidden="true">
-          <span>Founder photo</span>
-        </div>
-        <div className="team-copy">
-          <p className="section-label">Team</p>
-          <h2 id="team-title">
-            Guidance from someone who understands the brief.
-          </h2>
-          <p>
-            Founder description placeholder. Add a short bio here covering
-            investing experience, Islamic finance focus, credentials, and why
-            Mian Capital was started.
-          </p>
-          <p>
-            Keep this section personal and concise: who clients work with, how
-            the review process feels, and what kind of support they can expect.
-          </p>
-        </div>
+      <div className="section-intro reveal">
+        <p className="eyebrow">Our approach</p>
+        <h2 id="journey-title">A considered path from questions to action.</h2>
+        <p>
+          Each step is explained clearly, with the decisions and next actions
+          documented along the way.
+        </p>
+      </div>
+      <div className="journey-list">
+        {journeySteps.map((step) => (
+          <article className="journey-item reveal" key={step.number}>
+            <div className="journey-copy">
+              <span className="journey-number">{step.number}</span>
+              <p className="eyebrow">{step.eyebrow}</p>
+              <h3>{step.title}</h3>
+              <p>{step.description}</p>
+            </div>
+            <JourneyArtifact type={step.artifact} />
+          </article>
+        ))}
       </div>
     </section>
   );
 }
 
-function HomePage({ activeStep, onOpenInquiry, reducedMotion }) {
+function FullReport() {
+  const rows = [
+    ["U.S. equity fund", "Business activity", "Clear", "Keep"],
+    ["Individual equity", "Financial ratios", "Review", "Confirm"],
+    ["Fixed-income fund", "Instrument structure", "Action", "Replace"],
+  ];
+
   return (
-    <main id="top">
-      <Hero reducedMotion={reducedMotion} onOpenInquiry={onOpenInquiry} />
-      <Journey activeStep={activeStep} reducedMotion={reducedMotion} />
-      <Features />
+    <div className="full-report reveal" aria-label="Sample holdings review">
+      <div className="full-report-top">
+        <div>
+          <span>Mian Capital</span>
+          <strong>Holdings Review</strong>
+        </div>
+        <div>
+          <span>Sample client</span>
+          <strong>Illustrative report</strong>
+        </div>
+      </div>
+      <div className="full-report-heading">
+        <p>Portfolio review · 01</p>
+        <h3>Screening summary</h3>
+        <span>
+          A concise record of what was reviewed, why it matters, and what to do
+          next.
+        </span>
+      </div>
+      <div className="report-table">
+        <div className="report-table-heading">
+          <span>Holding</span>
+          <span>Primary screen</span>
+          <span>Status</span>
+          <span>Next action</span>
+        </div>
+        {rows.map(([holding, screen, status, action]) => (
+          <div className="report-table-row" key={holding}>
+            <strong>{holding}</strong>
+            <span>{screen}</span>
+            <span>{status}</span>
+            <strong>{action}</strong>
+          </div>
+        ))}
+      </div>
+      <div className="report-lower">
+        <div>
+          <p className="report-kicker">Methodology note</p>
+          <p>
+            Business activity and financial-ratio screens are reviewed using
+            current data and the agreed methodology. Classifications can change
+            as company data changes.
+          </p>
+        </div>
+        <div>
+          <p className="report-kicker">Advisor note</p>
+          <p>
+            Address the structural concern first, then revisit allocation once
+            the flagged holding is resolved.
+          </p>
+        </div>
+      </div>
+      <div className="report-footnote">
+        <span>Sample for illustration only</span>
+        <span>Page 1 of 1</span>
+      </div>
+    </div>
+  );
+}
+
+function ReportSection() {
+  return (
+    <section
+      className="report-section section-shell section-space"
+      id="report"
+      aria-labelledby="report-title"
+    >
+      <div className="report-intro reveal">
+        <div>
+          <p className="eyebrow">Holdings review</p>
+          <h2 id="report-title">A report you can understand and use.</h2>
+        </div>
+        <p>
+          Your review connects each conclusion to a reason and a practical next
+          step—without turning the experience into another platform.
+        </p>
+      </div>
+      <FullReport />
+      <div className="report-deliverables reveal">
+        <article>
+          <span>01</span>
+          <h3>Screening</h3>
+          <p>What was reviewed and where attention is needed.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Rationale</h3>
+          <p>Why each conclusion matters to the portfolio.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Next action</h3>
+          <p>A short, prioritized list of decisions to make.</p>
+        </article>
+      </div>
+    </section>
+  );
+}
+
+function TeamPage({ onOpenInquiry }) {
+  return (
+    <main className="team-page" id="top">
+      <section className="team-hero section-shell section-space">
+        <div className="portrait-placeholder reveal" aria-hidden="true">
+          <span>MC</span>
+          <small>Founder portrait</small>
+        </div>
+        <div className="team-copy reveal">
+          <p className="eyebrow">About Mian Capital</p>
+          <h1>Personal guidance, clearly explained.</h1>
+          <p>
+            Clients work directly with Mian Capital throughout the account,
+            portfolio-review, and decision-making process.
+          </p>
+          <div className="profile-notice">
+            Founder name, professional biography, credentials, and portrait will
+            be added here before launch.
+          </div>
+          <button className="button button-primary" onClick={onOpenInquiry}>
+            Request an introductory call
+            <ArrowIcon />
+          </button>
+        </div>
+      </section>
     </main>
   );
 }
 
-function TeamPage() {
+function HomePage({ onOpenInquiry }) {
   return (
-    <main className="team-page" id="top">
-      <Team />
+    <main id="top">
+      <Hero onOpenInquiry={onOpenInquiry} />
+      <Journey />
+      <ReportSection />
     </main>
   );
 }
 
 function Footer({ onOpenInquiry }) {
   return (
-    <footer className="site-footer">
-      <Brand />
-      <button className="footer-contact" type="button" onClick={onOpenInquiry}>
+    <footer className="site-footer section-shell">
+      <div>
+        <Brand />
+        <p>Islamic investment guidance, clearly explained.</p>
+      </div>
+      <div className="footer-links">
+        <a href="/#journey">Our approach</a>
+        <a href="/#report">Holdings review</a>
+        <a href="/team">About</a>
+      </div>
+      <button type="button" onClick={onOpenInquiry}>
         Start a conversation
+        <ArrowIcon />
       </button>
     </footer>
   );
@@ -395,53 +498,70 @@ function ContactInquiryModal({ open, onClose }) {
     name: "",
     email: "",
     phone: "",
-    topics: ["Portfolio screening"],
+    topics: [],
     details: "",
   };
-  const [formState, setFormState] = useState({
-    ...initialFormState,
-  });
+  const [formState, setFormState] = useState(initialFormState);
   const [submission, setSubmission] = useState({
     status: "idle",
     message: "",
   });
-  const submissionStatus = useRef(submission.status);
+  const statusRef = useRef(submission.status);
+  const modalRef = useRef(null);
 
   useEffect(() => {
-    submissionStatus.current = submission.status;
+    statusRef.current = submission.status;
   }, [submission.status]);
 
   useEffect(() => {
     if (!open) return undefined;
 
     const previousOverflow = document.body.style.overflow;
+    const previousFocus = document.activeElement;
     document.body.style.overflow = "hidden";
     setSubmission({ status: "idle", message: "" });
 
     const handleKeyDown = (event) => {
-      if (event.key === "Escape" && submissionStatus.current !== "submitting") {
+      if (event.key === "Escape" && statusRef.current !== "submitting") {
         onClose();
+      }
+
+      if (event.key === "Tab" && modalRef.current) {
+        const focusable = Array.from(
+          modalRef.current.querySelectorAll(
+            "a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled])",
+          ),
+        );
+        const first = focusable[0];
+        const last = focusable.at(-1);
+
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first?.focus();
+        }
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
-
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = previousOverflow;
+      previousFocus?.focus?.();
     };
   }, [open, onClose]);
 
   if (!open) return null;
 
   const toggleTopic = (topic) => {
-    setFormState((current) => {
-      const topics = current.topics.includes(topic)
+    setFormState((current) => ({
+      ...current,
+      topics: current.topics.includes(topic)
         ? current.topics.filter((item) => item !== topic)
-        : [...current.topics, topic];
-
-      return { ...current, topics };
-    });
+        : [...current.topics, topic],
+    }));
   };
 
   const handleSubmit = async (event) => {
@@ -451,9 +571,7 @@ function ContactInquiryModal({ open, onClose }) {
     try {
       const response = await fetch("/api/intake", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formState),
       });
       const result = await response.json().catch(() => ({}));
@@ -462,12 +580,8 @@ function ContactInquiryModal({ open, onClose }) {
         throw new Error(result.error || "Unable to send your request.");
       }
 
-      setFormState({ ...initialFormState });
-      setSubmission({
-        status: "success",
-        message:
-          "Your intake was sent. We will review it and follow up directly.",
-      });
+      setFormState(initialFormState);
+      setSubmission({ status: "success", message: "" });
     } catch (error) {
       setSubmission({
         status: "error",
@@ -475,6 +589,11 @@ function ContactInquiryModal({ open, onClose }) {
           error instanceof Error
             ? error.message
             : "Unable to send your request. Please try again.",
+      });
+      requestAnimationFrame(() => {
+        document
+          .querySelector(".inquiry-status")
+          ?.scrollIntoView({ block: "nearest" });
       });
     }
   };
@@ -485,147 +604,181 @@ function ContactInquiryModal({ open, onClose }) {
     <div
       className="inquiry-backdrop"
       onClick={() => {
-        if (!isSubmitting) {
-          onClose();
-        }
+        if (!isSubmitting) onClose();
       }}
     >
       <div
         className="inquiry-modal"
+        ref={modalRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="inquiry-title"
+        aria-describedby={
+          submission.status === "success" ? "inquiry-success-copy" : undefined
+        }
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="inquiry-header">
-          <div>
-            <p className="section-label">Start investing</p>
-            <h2 id="inquiry-title">Send a brief intake</h2>
-          </div>
-          <button
-            className="dialog-close"
-            type="button"
-            onClick={onClose}
-            aria-label="Close form"
-          >
-            <span aria-hidden="true" />
-          </button>
-        </div>
-
-        <form className="inquiry-form" onSubmit={handleSubmit}>
-          <div className="form-grid">
-            <label className="field">
-              <span>Name</span>
-              <input
-                autoFocus
-                required
-                type="text"
-                value={formState.name}
-                disabled={isSubmitting}
-                onChange={(event) =>
-                  setFormState((current) => ({
-                    ...current,
-                    name: event.target.value,
-                  }))
-                }
-              />
-            </label>
-            <label className="field">
-              <span>Email</span>
-              <input
-                required
-                type="email"
-                value={formState.email}
-                disabled={isSubmitting}
-                onChange={(event) =>
-                  setFormState((current) => ({
-                    ...current,
-                    email: event.target.value,
-                  }))
-                }
-              />
-            </label>
-            <label className="field">
-              <span>Phone</span>
-              <input
-                type="tel"
-                value={formState.phone}
-                disabled={isSubmitting}
-                onChange={(event) =>
-                  setFormState((current) => ({
-                    ...current,
-                    phone: event.target.value,
-                  }))
-                }
-              />
-            </label>
-          </div>
-
-          <fieldset className="topic-fieldset">
-            <legend>What do you need?</legend>
-            <div className="topic-grid">
-              {inquiryTopics.map((topic) => (
-                <label
-                  className={`topic-chip${
-                    formState.topics.includes(topic) ? " is-selected" : ""
-                  }`}
-                  key={topic}
-                >
-                  <input
-                    type="checkbox"
-                    checked={formState.topics.includes(topic)}
-                    disabled={isSubmitting}
-                    onChange={() => toggleTopic(topic)}
-                  />
-                  <span>{topic}</span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
-
-          <label className="field field-textarea">
-            <span>Optional details</span>
-            <textarea
-              rows={5}
-              value={formState.details}
-              disabled={isSubmitting}
-              onChange={(event) =>
-                setFormState((current) => ({
-                  ...current,
-                  details: event.target.value,
-                }))
-              }
-            />
-          </label>
-
-          {submission.message ? (
-            <p
-              className={`inquiry-status inquiry-status-${submission.status}`}
-              role={submission.status === "error" ? "alert" : "status"}
-            >
-              {submission.message}
+        {submission.status === "success" ? (
+          <div className="inquiry-success">
+            <span className="success-mark" aria-hidden="true">
+              ✓
+            </span>
+            <p className="eyebrow">Request received</p>
+            <h2 id="inquiry-title">Thank you for reaching out.</h2>
+            <p id="inquiry-success-copy">
+              We will review your note and respond directly, usually within one
+              business day.
             </p>
-          ) : null}
-
-          <div className="inquiry-actions">
-            <button
-              className="button button-lime"
-              type="submit"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Sending..." : "Send request"}
-              <ArrowIcon />
-            </button>
-            <button
-              className="button button-outline"
-              type="button"
-              onClick={onClose}
-              disabled={isSubmitting}
-            >
-              {submission.status === "success" ? "Close" : "Cancel"}
+            <button className="button button-primary" onClick={onClose}>
+              Close
             </button>
           </div>
-        </form>
+        ) : (
+          <>
+            <div className="inquiry-header">
+              <div>
+                <p className="eyebrow">Start a conversation</p>
+                <h2 id="inquiry-title">Tell us what you’re looking for.</h2>
+                <p>Usually takes less than a minute.</p>
+              </div>
+              <button
+                className="dialog-close"
+                type="button"
+                onClick={onClose}
+                aria-label="Close form"
+              >
+                <span aria-hidden="true" />
+              </button>
+            </div>
+            <form className="inquiry-form" onSubmit={handleSubmit}>
+              <div className="form-grid">
+                <label className="field">
+                  <span>Name</span>
+                  <input
+                    autoFocus
+                    required
+                    autoComplete="name"
+                    type="text"
+                    value={formState.name}
+                    disabled={isSubmitting}
+                    onChange={(event) =>
+                      setFormState((current) => ({
+                        ...current,
+                        name: event.target.value,
+                      }))
+                    }
+                  />
+                </label>
+                <label className="field">
+                  <span>Email</span>
+                  <input
+                    required
+                    autoComplete="email"
+                    type="email"
+                    value={formState.email}
+                    disabled={isSubmitting}
+                    onChange={(event) =>
+                      setFormState((current) => ({
+                        ...current,
+                        email: event.target.value,
+                      }))
+                    }
+                  />
+                </label>
+                <label className="field field-phone">
+                  <span>Phone (optional)</span>
+                  <input
+                    autoComplete="tel"
+                    type="tel"
+                    value={formState.phone}
+                    disabled={isSubmitting}
+                    onChange={(event) =>
+                      setFormState((current) => ({
+                        ...current,
+                        phone: event.target.value,
+                      }))
+                    }
+                  />
+                </label>
+              </div>
+              <fieldset className="topic-fieldset">
+                <legend>How can we help?</legend>
+                <div className="topic-grid">
+                  {inquiryTopics.map(([value, label]) => (
+                    <label
+                      className={`topic-chip${
+                        formState.topics.includes(value) ? " is-selected" : ""
+                      }`}
+                      key={value}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={formState.topics.includes(value)}
+                        disabled={isSubmitting}
+                        onChange={() => toggleTopic(value)}
+                      />
+                      <span>{label}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+              <label className="field field-textarea">
+                <span>Anything else? (optional)</span>
+                <textarea
+                  rows={4}
+                  placeholder="A goal, question, or detail that would help us prepare."
+                  value={formState.details}
+                  disabled={isSubmitting}
+                  onChange={(event) =>
+                    setFormState((current) => ({
+                      ...current,
+                      details: event.target.value,
+                    }))
+                  }
+                />
+              </label>
+              {submission.status === "error" ? (
+                <div
+                  className="inquiry-status inquiry-status-error"
+                  role="alert"
+                >
+                  <strong>{submission.message}</strong>
+                  <span>
+                    Try again or email{" "}
+                    <a href="mailto:wlmian31@gmail.com">wlmian31@gmail.com</a>.
+                  </span>
+                </div>
+              ) : null}
+              <div className="inquiry-actions">
+                <button
+                  className="button button-primary"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <span className="sending-label">
+                      <span className="spinner" aria-hidden="true" />
+                      Sending
+                    </span>
+                  ) : (
+                    <>
+                      Send request
+                      <ArrowIcon />
+                    </>
+                  )}
+                </button>
+                <button
+                  className="button button-secondary"
+                  type="button"
+                  onClick={onClose}
+                  disabled={isSubmitting}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </>
+        )}
       </div>
     </div>
   );
@@ -634,211 +787,76 @@ function ContactInquiryModal({ open, onClose }) {
 function App() {
   const page = useRef(null);
   const reducedMotion = useReducedMotion();
-  const [activeStep, setActiveStep] = useState("setup");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isInquiryOpen, setIsInquiryOpen] = useState(false);
   const [path, setPath] = useState(() =>
     window.location.pathname === "/team" ? "/team" : "/",
   );
-  const stepNames = useMemo(() => ["setup", "screening", "advice"], []);
+  const openInquiry = () => setIsInquiryOpen(true);
+  const routeNames = useMemo(() => ["/", "/team"], []);
 
   useGSAP(
     () => {
-      const isMobile = window.matchMedia("(max-width: 720px)").matches;
-      const revealDistance = isMobile ? 14 : 24;
-      const heroCopy = page.current?.querySelector(".hero-copy");
-      const heroVisual = page.current?.querySelector(".hero-visual");
-      const reportLines = gsap.utils.toArray(".report-line");
-      const stageCards = gsap.utils.toArray(".stage-card");
+      if (reducedMotion) return;
 
-      if (reducedMotion) {
-        gsap.set(".reveal", {
-          autoAlpha: 1,
-          clearProps: "transform",
-        });
-        if (heroCopy) {
-          gsap.set(".hero-copy > *", {
+      const heroElements = gsap.utils.toArray(".hero-copy > *, .hero-document");
+      if (heroElements.length) {
+        gsap.fromTo(
+          heroElements,
+          { autoAlpha: 0, y: 18 },
+          {
             autoAlpha: 1,
-            clearProps: "transform",
-          });
-        }
-        if (reportLines.length) {
-          gsap.set(reportLines, {
-            autoAlpha: 1,
-            clearProps: "transform",
-          });
-        }
-        if (stageCards.length) {
-          gsap.set(stageCards, { autoAlpha: 1, y: 0, scale: 1 });
-        }
-        return;
+            y: 0,
+            duration: 0.8,
+            stagger: 0.08,
+            ease: "power3.out",
+          },
+        );
       }
 
-      gsap.set(".reveal", { autoAlpha: 0, y: revealDistance });
-      if (heroCopy) {
-        const heroChildren = Array.from(heroCopy.children);
-        gsap.set(heroCopy, { autoAlpha: 1, y: 0 });
-        gsap.set(heroChildren, {
-          autoAlpha: 0,
-          y: isMobile ? 14 : 20,
-        });
-        if (reportLines.length) {
-          gsap.set(reportLines, { autoAlpha: 0, y: 10 });
-        }
-
-        const heroTimeline = gsap.timeline({
-          defaults: { ease: "power3.out" },
-        });
-        heroTimeline.to(heroChildren, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.78,
-          stagger: 0.1,
-        });
-        if (heroVisual) {
-          heroTimeline.to(
-            heroVisual,
-            {
-              autoAlpha: 1,
-              y: 0,
-              scale: 1,
-              duration: isMobile ? 0.58 : 0.84,
-            },
-            "-=0.42",
-          );
-        }
-        if (reportLines.length) {
-          heroTimeline.to(
-            reportLines,
-            {
-              autoAlpha: 1,
-              y: 0,
-              duration: 0.42,
-              stagger: 0.045,
-            },
-            "-=0.35",
-          );
-        }
-      }
-
-      gsap.utils
-        .toArray(
-          ".reveal:not(.hero-copy):not(.hero-visual):not(.advisory-card)",
-        )
-        .forEach((element) => {
-          gsap.to(element, {
+      gsap.utils.toArray(".reveal").forEach((element) => {
+        gsap.fromTo(
+          element,
+          { autoAlpha: 0, y: 20 },
+          {
             autoAlpha: 1,
             y: 0,
             duration: 0.72,
             ease: "power3.out",
             scrollTrigger: {
               trigger: element,
-              start: "top 86%",
+              start: "top 88%",
               once: true,
             },
-          });
-        });
-
-      const advisoryCards = gsap.utils.toArray(".advisory-card");
-      const advisoryGrid = page.current?.querySelector(".advisory-cards");
-      if (advisoryCards.length && advisoryGrid) {
-        gsap.to(advisoryCards, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.68,
-          ease: "power3.out",
-          stagger: 0.08,
-          scrollTrigger: {
-            trigger: advisoryGrid,
-            start: "top 84%",
-            once: true,
           },
-        });
-      }
+        );
+      });
 
       ScrollTrigger.refresh();
     },
-    { dependencies: [reducedMotion, path], revertOnUpdate: true, scope: page },
+    { dependencies: [path, reducedMotion], revertOnUpdate: true, scope: page },
   );
 
   useEffect(() => {
-    const scope = page.current;
-    if (!scope) return undefined;
-
-    const activeStepElement = scope.querySelector(
-      `.step[data-step="${activeStep}"]`,
-    );
-    if (reducedMotion) {
-      const panels = Array.from(scope.querySelectorAll(".stage-card"));
-      if (panels.length) {
-        gsap.set(panels, { autoAlpha: 1, y: 0, scale: 1 });
-      }
-      return undefined;
-    }
-
-    if (activeStepElement) {
-      const stepNumber = activeStepElement.querySelector(".step-number");
-      gsap.fromTo(
-        stepNumber,
-        { y: 6 },
-        { y: 0, duration: 0.34, ease: "power2.out" },
-      );
-    }
-
-    return undefined;
-  }, [activeStep, reducedMotion]);
-
-  useEffect(() => {
-    const steps = Array.from(document.querySelectorAll(".step"));
     let ticking = false;
-
-    const updateStep = () => {
+    const updateHeader = () => {
       ticking = false;
       setIsScrolled(window.scrollY > 12);
-      const section = document.querySelector(".scrolly");
-      if (!section || !steps.length) return;
-
-      const sectionRect = section.getBoundingClientRect();
-      if (
-        sectionRect.bottom <= 160 ||
-        sectionRect.top >= window.innerHeight - 160
-      ) {
-        return;
-      }
-
-      const activationLine = window.innerHeight * 0.42;
-      const active =
-        steps.findLast((step) => {
-          const rect = step.getBoundingClientRect();
-          return rect.top <= activationLine;
-        }) ?? steps[0];
-
-      if (stepNames.includes(active.dataset.step)) {
-        setActiveStep(active.dataset.step);
-      }
     };
-
     const requestUpdate = () => {
       if (ticking) return;
       ticking = true;
-      requestAnimationFrame(updateStep);
+      requestAnimationFrame(updateHeader);
     };
-
     window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
     requestUpdate();
-
-    return () => {
-      window.removeEventListener("scroll", requestUpdate);
-      window.removeEventListener("resize", requestUpdate);
-    };
-  }, [stepNames]);
+    return () => window.removeEventListener("scroll", requestUpdate);
+  }, []);
 
   useEffect(() => {
     const handlePopState = () => {
       setPath(window.location.pathname === "/team" ? "/team" : "/");
     };
-
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
@@ -847,10 +865,9 @@ function App() {
     const handleNavigation = (event) => {
       const link = event.target.closest("a[href]");
       if (!link) return;
-
       const url = new URL(link.href, window.location.href);
       if (url.origin !== window.location.origin) return;
-      if (!["/", "/team"].includes(url.pathname)) return;
+      if (!routeNames.includes(url.pathname)) return;
 
       event.preventDefault();
       window.history.pushState({}, "", `${url.pathname}${url.hash}`);
@@ -860,9 +877,7 @@ function App() {
         const target = url.hash
           ? document.querySelector(url.hash)
           : document.querySelector("#top");
-        if (!target) return;
-
-        target.scrollIntoView({
+        target?.scrollIntoView({
           behavior: reducedMotion ? "auto" : "smooth",
           block: "start",
         });
@@ -871,21 +886,17 @@ function App() {
 
     document.addEventListener("click", handleNavigation);
     return () => document.removeEventListener("click", handleNavigation);
-  }, [reducedMotion]);
+  }, [reducedMotion, routeNames]);
 
   return (
     <div className="page-shell" ref={page}>
-      <Header isScrolled={isScrolled} />
+      <Header isScrolled={isScrolled} onOpenInquiry={openInquiry} />
       {path === "/team" ? (
-        <TeamPage />
+        <TeamPage onOpenInquiry={openInquiry} />
       ) : (
-        <HomePage
-          activeStep={activeStep}
-          reducedMotion={reducedMotion}
-          onOpenInquiry={() => setIsInquiryOpen(true)}
-        />
+        <HomePage onOpenInquiry={openInquiry} />
       )}
-      <Footer onOpenInquiry={() => setIsInquiryOpen(true)} />
+      <Footer onOpenInquiry={openInquiry} />
       <ContactInquiryModal
         open={isInquiryOpen}
         onClose={() => setIsInquiryOpen(false)}
