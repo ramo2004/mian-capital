@@ -2,7 +2,7 @@
 
 ## Goal + Current Status
 
-Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand, then deploy it publicly with ChatGPT Sites. The redesign and requested cadence/copy cleanup pass formatting, production build, rendered QA, and overflow checks. Sites project creation is pending because the provider returned the same workspace/service rate-limit response twice; no Sites project or deployment exists yet. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
+Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand, then deploy it publicly with ChatGPT Sites. The redesign and requested cadence/copy cleanup pass formatting, production build, rendered QA, and overflow checks. Sites project creation is pending because the provider returned the same workspace/service rate-limit response three times, including after a meaningful cooldown; no Sites project or deployment exists yet. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
 
 ## Key Decisions
 
@@ -46,7 +46,7 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 - Dependency cleanup: `npm uninstall @shadergradient/react @react-three/fiber three` — passed, zero vulnerabilities.
 - Current checks: `npm run format`, `npm run format:check`, `npm run build`, `git diff --check` — passed. Build is now 23 modules with no large shader chunk warning.
 - Cadence/copy cleanup: `rg` confirmed the requested phrases and report-deliverables selectors are absent; headed browser QA confirmed 3 journey numbers, 0 artifact-header numbers, 0 deliverable strips, the restored tagline, no overflow, and a clean console.
-- Sites discovery: official OpenAI docs confirm Sites can deploy compatible local projects and every deployment URL is production. `list_sites` returned no existing projects. Two `create_site` attempts failed before creation with `More than 2400 requests per 300 seconds reached`; no project ID or manifest was produced.
+- Sites discovery: official OpenAI docs confirm Sites can deploy compatible local projects and every deployment URL is production. Repeated `list_sites` checks returned no existing projects. Three `create_site` attempts, including one after a full cooldown and duplicate-project check, failed before creation with `More than 2400 requests per 300 seconds reached`; no project ID or manifest was produced.
 - Fresh headed-browser QA at `1440x1000` and `390x844` — home, journey, report, Team, navigation, sticky header, mobile menu, intake default/success/error states, and footer rendered correctly.
 - Fresh console QA — 0 errors and 0 warnings during normal navigation. The only observed error was the intentional mocked `502` used to verify the recovery state.
 - Overflow QA — desktop `1425/1425` and mobile `375/375`; no horizontal overflow. Shader/canvas node count is zero.
