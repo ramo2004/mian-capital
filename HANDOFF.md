@@ -2,7 +2,7 @@
 
 ## Goal + Current Status
 
-Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand, then deploy it publicly with ChatGPT Sites. The site is live at `https://mian-capital-advisory.omarimian.chatgpt.site`. A further concise-copy pass now leads directly from `Our approach` into step 01, removes redundant report copy, and removes all em dashes from shipped source; local desktop/mobile QA passes and the Sites redeploy is pending. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
+Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand, then deploy it publicly with ChatGPT Sites. The concise-copy pass is live as Sites version 3 at `https://mian-capital-advisory.omarimian.chatgpt.site` from commit `259d33a`: `Our approach` leads directly into step 01, redundant report copy is removed, and shipped source contains no em dashes. Local desktop/mobile QA and production asset/copy checks pass. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
 
 ## Key Decisions
 
@@ -60,6 +60,7 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 - Production HTTP checks: `/` and `/team` returned 200 HTML with the correct title; hashed JavaScript and CSS returned 200; `GET /api/intake` returned the expected 405 JSON response.
 - Concise-copy QA: requested phrases and em dashes are absent from shipped source; headed Chromium at desktop and mobile confirmed the new journey/report flow, 0 console errors, and mobile width `375/375` with no overflow.
 - Missing Sites email configuration now returns the user-facing `We couldn't send your request.` while preserving the direct-email fallback instead of exposing internal configuration wording.
+- Sites version 3: commit `259d33a` saved and deployed publicly. Production HTML and the new `index-B9hOq4R0.js` returned 200; required concise phrases were present, removed phrases and em dashes were absent, and the unconfigured intake endpoint returned the expected user-facing error.
 - Fresh headed-browser QA at `1440x1000` and `390x844` — home, journey, report, Team, navigation, sticky header, mobile menu, intake default/success/error states, and footer rendered correctly.
 - Fresh console QA — 0 errors and 0 warnings during normal navigation. The only observed error was the intentional mocked `502` used to verify the recovery state.
 - Overflow QA — desktop `1425/1425` and mobile `375/375`; no horizontal overflow. Shader/canvas node count is zero.
