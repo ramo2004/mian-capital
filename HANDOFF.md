@@ -2,7 +2,7 @@
 
 ## Goal + Current Status
 
-Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand, then deploy it publicly with ChatGPT Sites. The redesign and requested cadence/copy cleanup pass formatting, production build, rendered QA, and overflow checks. Sites project creation succeeded on the July 13 retry and the project is now linked in `.openai/hosting.json`; version save and public deployment are in progress. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
+Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand, then deploy it publicly with ChatGPT Sites. The redesign and requested cadence/copy cleanup pass formatting, production build, rendered QA, and overflow checks. Sites project creation succeeded on the July 13 retry. Version 1 exposed the plain-Vite artifact incompatibility; a dependency-free Sites Worker build is now implemented and locally verified, with version 2 deployment pending. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
 
 ## Key Decisions
 
@@ -38,6 +38,9 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 - Deleted `src/components/ShaderAtmosphere.jsx`, `src/components/ViewportVisual.jsx`, and the three generated journey PNGs.
 - `HANDOFF.md`: consolidated for a cold restart.
 - `.openai/hosting.json`: binds this local repo to the provisioned Mian Capital Sites project; contains no secrets.
+- `scripts/prepare-sites-build.mjs`: emits the Sites-required `dist/client`, `dist/server`, and copied hosting manifest structure.
+- `sites/worker.js`: serves static SPA routes and the intake endpoint in the Sites Worker runtime.
+- `api/intake.js`: shares one validated Resend submission core between Vercel and Sites adapters.
 
 ## Commands Run + Outcomes
 
@@ -49,13 +52,15 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 - Cadence/copy cleanup: `rg` confirmed the requested phrases and report-deliverables selectors are absent; headed browser QA confirmed 3 journey numbers, 0 artifact-header numbers, 0 deliverable strips, the restored tagline, no overflow, and a clean console.
 - Sites discovery: official OpenAI docs confirm Sites can deploy compatible local projects and every deployment URL is production. Repeated `list_sites` checks returned no existing projects. Three `create_site` attempts, including one after a full cooldown and duplicate-project check, failed before creation with `More than 2400 requests per 300 seconds reached`; no project ID or manifest was produced.
 - Sites retry on July 13: `list_sites` still returned no projects, then one `create_site` call succeeded and `.openai/hosting.json` was persisted immediately.
+- Sites version 1 saved successfully but deployment failed with `missing dist/server/index.js`; the plain Vite output was not a compatible deployable artifact.
+- Sites-compatible build: `npm run build` now emits `dist/client/index.html`, `dist/server/index.js`, `dist/server/intake.js`, and `dist/.openai/hosting.json`. Direct Worker checks returned 200 for home and route fallback and 400 for invalid intake.
 - Fresh headed-browser QA at `1440x1000` and `390x844` — home, journey, report, Team, navigation, sticky header, mobile menu, intake default/success/error states, and footer rendered correctly.
 - Fresh console QA — 0 errors and 0 warnings during normal navigation. The only observed error was the intentional mocked `502` used to verify the recovery state.
 - Overflow QA — desktop `1425/1425` and mobile `375/375`; no horizontal overflow. Shader/canvas node count is zero.
 
 ## Current Blockers / Unknowns
 
-- The previous Sites create throttle has cleared. The remaining unknown is whether the existing Vite source builds directly in the beta Sites pipeline or needs compatibility changes.
+- The previous Sites create throttle has cleared. The remaining deployment risk is whether Sites provides the standard `ASSETS` binding expected by the Worker; verify this from the public URL.
 - Before launch, the user must supply the founder's name, professional biography, credentials, and portrait.
 - Advisory and Shariah-screening language should receive appropriate legal/compliance review before production use.
 
@@ -67,7 +72,7 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 
 ## Next Steps Checklist
 
-- Push the exact manifest-linked source state to the Sites source repository, save a version, set access to public, deploy, and verify the production URL.
+- Push the Sites-compatible source state, save version 2, deploy it with the existing public access policy, and verify the production URL and SPA route fallback.
 - Review the redesign visually and collect any preference-level refinements.
 - Replace the Team placeholder with supplied founder content and photography.
 - Complete legal/compliance review and production email configuration before launch.

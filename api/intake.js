@@ -101,24 +101,20 @@ function buildEmail({ name, email, phone, details, topics }) {
   };
 }
 
-export default async function handler(request, response) {
-  if (request.method !== "POST") {
-    response.setHeader("Allow", "POST");
-    return response.status(405).json({ error: "Method not allowed." });
-  }
-
-  const apiKey = process.env.RESEND_API_KEY;
-  const fromEmail = process.env.INTAKE_FROM_EMAIL;
+export async function submitIntake(body, environment) {
+  const apiKey = environment?.RESEND_API_KEY;
+  const fromEmail = environment?.INTAKE_FROM_EMAIL;
 
   if (!apiKey || !fromEmail) {
-    return response.status(500).json({
-      error: "Email delivery is not configured.",
-    });
+    return {
+      status: 500,
+      body: { error: "Email delivery is not configured." },
+    };
   }
 
-  const normalized = normalizePayload(request.body);
+  const normalized = normalizePayload(body);
   if (normalized.error) {
-    return response.status(400).json({ error: normalized.error });
+    return { status: 400, body: { error: normalized.error } };
   }
 
   const email = buildEmail(normalized.data);
@@ -146,16 +142,28 @@ export default async function handler(request, response) {
         status: resendResponse.status,
         body: errorBody,
       });
-      return response.status(502).json({
-        error: "Email delivery failed. Please try again.",
-      });
+      return {
+        status: 502,
+        body: { error: "Email delivery failed. Please try again." },
+      };
     }
 
-    return response.status(200).json({ ok: true });
+    return { status: 200, body: { ok: true } };
   } catch (error) {
     console.error("Intake submission failed", error);
-    return response.status(502).json({
-      error: "Email delivery failed. Please try again.",
-    });
+    return {
+      status: 502,
+      body: { error: "Email delivery failed. Please try again." },
+    };
   }
+}
+
+export default async function handler(request, response) {
+  if (request.method !== "POST") {
+    response.setHeader("Allow", "POST");
+    return response.status(405).json({ error: "Method not allowed." });
+  }
+
+  const result = await submitIntake(request.body, process.env);
+  return response.status(result.status).json(result.body);
 }
