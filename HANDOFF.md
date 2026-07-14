@@ -2,7 +2,7 @@
 
 ## Goal + Current Status
 
-Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand, then deploy it publicly with ChatGPT Sites. The redesign and requested cadence/copy cleanup pass formatting, production build, rendered QA, and overflow checks. Sites version 2 is publicly live at `https://mian-capital-advisory.omarimian.chatgpt.site` from commit `264f229`; unauthenticated home, direct Team route, JavaScript, CSS, and API method checks pass. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
+Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand, then deploy it publicly with ChatGPT Sites. The site is live at `https://mian-capital-advisory.omarimian.chatgpt.site`. A further concise-copy pass now leads directly from `Our approach` into step 01, removes redundant report copy, and removes all em dashes from shipped source; local desktop/mobile QA passes and the Sites redeploy is pending. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
 
 ## Key Decisions
 
@@ -14,6 +14,8 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 - Rebuilt the hero, journey, and holdings review around code-native advisory documents rather than dashboards or decorative imagery.
 - The report uses illustrative holding categories and explicit sample labels rather than unsupported compliance percentages or claims about real securities.
 - Only the primary journey retains `01 / 02 / 03`. Supporting artifact numbers, the numbered advisor list, the repeated report-deliverables strip, and the requested explanatory captions were removed.
+- `Our approach` now serves only as the journey label; the redundant section headline and explanatory paragraph were removed so step 01 begins immediately.
+- Copy is intentionally direct: removed dashboard/platform comparisons, filler qualifiers, the report advisor note, the intake timing claim, and all em dashes from shipped source.
 - The footer tagline is `Invest Islamically.`
 - Motion is limited to one hero sequence and restrained section reveals. Content is visible by default and `prefers-reduced-motion` remains supported.
 - Added a real mobile menu, opaque sticky-header layers, and removed modal backdrop blur after headed Chromium exposed GPU black-compositing artifacts.
@@ -56,6 +58,8 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 - Sites-compatible build: `npm run build` now emits `dist/client/index.html`, `dist/server/index.js`, `dist/server/intake.js`, and `dist/.openai/hosting.json`. Direct Worker checks returned 200 for home and route fallback and 400 for invalid intake.
 - Sites version 2: source commit `264f229` pushed and saved, public access retained, production deployment succeeded at `https://mian-capital-advisory.omarimian.chatgpt.site`.
 - Production HTTP checks: `/` and `/team` returned 200 HTML with the correct title; hashed JavaScript and CSS returned 200; `GET /api/intake` returned the expected 405 JSON response.
+- Concise-copy QA: requested phrases and em dashes are absent from shipped source; headed Chromium at desktop and mobile confirmed the new journey/report flow, 0 console errors, and mobile width `375/375` with no overflow.
+- Missing Sites email configuration now returns the user-facing `We couldn't send your request.` while preserving the direct-email fallback instead of exposing internal configuration wording.
 - Fresh headed-browser QA at `1440x1000` and `390x844` — home, journey, report, Team, navigation, sticky header, mobile menu, intake default/success/error states, and footer rendered correctly.
 - Fresh console QA — 0 errors and 0 warnings during normal navigation. The only observed error was the intentional mocked `502` used to verify the recovery state.
 - Overflow QA — desktop `1425/1425` and mobile `375/375`; no horizontal overflow. Shader/canvas node count is zero.

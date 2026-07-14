@@ -108,7 +108,7 @@ export async function submitIntake(body, environment) {
   if (!apiKey || !fromEmail) {
     return {
       status: 500,
-      body: { error: "Email delivery is not configured." },
+      body: { error: "We couldn't send your request." },
     };
   }
 

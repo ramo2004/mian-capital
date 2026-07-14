@@ -272,7 +272,6 @@ svg {
 }
 
 .hero h1,
-.section-intro h2,
 .report-intro h2,
 .team-copy h1 {
   margin: 22px 0 0;
@@ -561,27 +560,20 @@ svg {
   border-top: 1px solid var(--line);
 }
 
-.section-intro {
-  display: grid;
-  grid-template-columns: 1.15fr 0.65fr;
-  gap: clamp(36px, 7vw, 96px);
-  align-items: end;
-  margin-bottom: clamp(64px, 8vw, 104px);
+.journey-label {
+  margin-bottom: clamp(36px, 6vw, 72px);
 }
 
-.section-intro .eyebrow {
-  grid-column: 1 / -1;
-  margin-bottom: -12px;
+.journey-label .eyebrow {
+  margin: 0;
 }
 
-.section-intro h2,
 .report-intro h2 {
   margin-top: 0;
   font-size: clamp(45px, 5.6vw, 72px);
   line-height: 1.03;
 }
 
-.section-intro > p:last-child,
 .report-intro > p {
   margin: 0;
   color: var(--ink-soft);
@@ -882,8 +874,7 @@ svg {
 
 .report-lower {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  grid-template-columns: 1fr;
   margin-top: 40px;
 }
 
@@ -1328,13 +1319,8 @@ svg {
     margin-left: auto;
   }
 
-  .section-intro,
   .report-intro {
     grid-template-columns: 1fr;
-  }
-
-  .section-intro .eyebrow {
-    margin-bottom: 0;
   }
 
   .journey-item {
@@ -1433,18 +1419,15 @@ svg {
     grid-template-columns: auto 1fr;
   }
 
-  .section-intro,
   .report-intro {
     gap: 24px;
     margin-bottom: 50px;
   }
 
-  .section-intro h2,
   .report-intro h2 {
     font-size: 43px;
   }
 
-  .section-intro > p:last-child,
   .report-intro > p {
     font-size: 15px;
   }

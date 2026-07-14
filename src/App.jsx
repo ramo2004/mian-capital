@@ -21,7 +21,7 @@ const journeySteps = [
     eyebrow: "Understand",
     title: "Start with the right account.",
     description:
-      "We begin with your goals, timeline, and current financial picture, then clarify which account type fits the job.",
+      "We begin with your goals, timeline, and financial picture, then identify the right account.",
     artifact: "account",
   },
   {
@@ -29,15 +29,14 @@ const journeySteps = [
     eyebrow: "Review",
     title: "Know what you own.",
     description:
-      "We organize your holdings, apply the agreed screening approach, and explain what deserves attention.",
+      "We organize your holdings, screen them using the agreed approach, and explain what needs attention.",
     artifact: "screening",
   },
   {
     number: "03",
     eyebrow: "Advise",
-    title: "Leave with a practical plan.",
-    description:
-      "You receive clear priorities for what to keep, revisit, or change—without having to interpret a dashboard.",
+    title: "Leave with a plan.",
+    description: "You receive priorities for what to keep, revisit, or change.",
     artifact: "plan",
   },
 ];
@@ -159,10 +158,7 @@ function ReviewDocument({ compact = false }) {
       </div>
       <div className="document-note">
         <span>Advisor note</span>
-        <p>
-          Focus first on the decisions that materially affect alignment and
-          long-term goals.
-        </p>
+        <p>Focus on decisions that affect alignment and long-term goals.</p>
       </div>
     </div>
   );
@@ -180,8 +176,7 @@ function Hero({ onOpenInquiry }) {
         <h1 id="hero-title">A clearer way to invest with your values.</h1>
         <p className="hero-intro">
           Personal guidance for choosing the right account, reviewing your
-          portfolio, and making informed, Shariah-conscious investment
-          decisions.
+          portfolio, and making Shariah-conscious investment decisions.
         </p>
         <div className="hero-actions">
           <button className="button button-primary" onClick={onOpenInquiry}>
@@ -189,7 +184,7 @@ function Hero({ onOpenInquiry }) {
             <ArrowIcon />
           </button>
           <a className="button button-secondary" href="#journey">
-            See the advisory process
+            See our process
             <ArrowIcon />
           </a>
         </div>
@@ -236,7 +231,7 @@ function ScreeningArtifact() {
       <div className="artifact-header">
         <span>Holdings screen</span>
       </div>
-      <h4>Review each holding in context.</h4>
+      <h4>Review each holding.</h4>
       <div className="screening-table">
         <div className="screening-heading">
           <span>Holding</span>
@@ -274,7 +269,7 @@ function PlanArtifact() {
           <p>Resolve the flagged exposure.</p>
         </li>
         <li>
-          <p>Agree on how the portfolio will be reviewed over time.</p>
+          <p>Set a review schedule.</p>
         </li>
       </ul>
     </div>
@@ -292,15 +287,10 @@ function Journey() {
     <section
       className="journey section-shell section-space"
       id="journey"
-      aria-labelledby="journey-title"
+      aria-label="Our approach"
     >
-      <div className="section-intro reveal">
+      <div className="journey-label reveal">
         <p className="eyebrow">Our approach</p>
-        <h2 id="journey-title">A considered path from questions to action.</h2>
-        <p>
-          Each step is explained clearly, with the decisions and next actions
-          documented along the way.
-        </p>
       </div>
       <div className="journey-list">
         {journeySteps.map((step) => (
@@ -367,13 +357,6 @@ function FullReport() {
             as company data changes.
           </p>
         </div>
-        <div>
-          <p className="report-kicker">Advisor note</p>
-          <p>
-            Address the structural concern first, then revisit allocation once
-            the flagged holding is resolved.
-          </p>
-        </div>
       </div>
       <div className="report-footnote">
         <span>Sample for illustration only</span>
@@ -393,12 +376,9 @@ function ReportSection() {
       <div className="report-intro reveal">
         <div>
           <p className="eyebrow">Holdings review</p>
-          <h2 id="report-title">A report you can understand and use.</h2>
+          <h2 id="report-title">A report you can use.</h2>
         </div>
-        <p>
-          Your review connects each conclusion to a reason and a practical next
-          step—without turning the experience into another platform.
-        </p>
+        <p>Each conclusion includes a reason and a next step.</p>
       </div>
       <FullReport />
     </section>
@@ -415,10 +395,10 @@ function TeamPage({ onOpenInquiry }) {
         </div>
         <div className="team-copy reveal">
           <p className="eyebrow">About Mian Capital</p>
-          <h1>Personal guidance, clearly explained.</h1>
+          <h1>Personal investment guidance.</h1>
           <p>
-            Clients work directly with Mian Capital throughout the account,
-            portfolio-review, and decision-making process.
+            Work directly with Mian Capital on account selection, portfolio
+            reviews, and investment decisions.
           </p>
           <div className="profile-notice">
             Founder name, professional biography, credentials, and portrait will
@@ -597,8 +577,7 @@ function ContactInquiryModal({ open, onClose }) {
             <p className="eyebrow">Request received</p>
             <h2 id="inquiry-title">Thank you for reaching out.</h2>
             <p id="inquiry-success-copy">
-              We will review your note and respond directly, usually within one
-              business day.
+              We will respond directly within one business day.
             </p>
             <button className="button button-primary" onClick={onClose}>
               Close
@@ -610,7 +589,6 @@ function ContactInquiryModal({ open, onClose }) {
               <div>
                 <p className="eyebrow">Start a conversation</p>
                 <h2 id="inquiry-title">Tell us what you’re looking for.</h2>
-                <p>Usually takes less than a minute.</p>
               </div>
               <button
                 className="dialog-close"
@@ -697,7 +675,7 @@ function ContactInquiryModal({ open, onClose }) {
                 <span>Anything else? (optional)</span>
                 <textarea
                   rows={4}
-                  placeholder="A goal, question, or detail that would help us prepare."
+                  placeholder="Add a goal, question, or relevant detail."
                   value={formState.details}
                   disabled={isSubmitting}
                   onChange={(event) =>
