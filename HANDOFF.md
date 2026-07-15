@@ -2,7 +2,7 @@
 
 ## Goal + Current Status
 
-Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand, then deploy it publicly with ChatGPT Sites. The concise-copy pass and production intake email are live at `https://mian-capital-advisory.omarimian.chatgpt.site` from Sites version 3 / commit `259d33a`; desktop/mobile QA, production asset/copy checks, and end-to-end Resend delivery pass. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
+Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand, then deploy it publicly with ChatGPT Sites. The production intake email remains live and verified; the latest local copy pass adds `Shariah screening summary` to the sample report and removes the hero reassurance sentence. A replacement for the wordmark-and-rule brand treatment is awaiting the user's choice among three proposed logo directions. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
 
 ## Key Decisions
 
@@ -10,6 +10,7 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 - Replaced the mixed neo-brutalist/fintech styling with an ivory, navy, muted olive, and restrained gold editorial system inspired by the approved first mockup.
 - Removed the WebGL shader, Three/R3F dependencies, and generated journey images. The hero atmosphere is now lightweight CSS linework and tonal washes.
 - Replaced the animated sticker-like logo with a quiet serif `Mian Capital` wordmark and static gold rule.
+- The current gold line is only a decorative wordmark rule, not a standalone logo symbol. Do not replace it until the user chooses a new logo direction.
 - Reframed the primary CTA as `Request an introductory call`; retained concise reassurance and avoided adding speculative marketing sections.
 - Rebuilt the hero, journey, and holdings review around code-native advisory documents rather than dashboards or decorative imagery.
 - The report uses illustrative holding categories and explicit sample labels rather than unsupported compliance percentages or claims about real securities.
@@ -63,6 +64,7 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 - Sites version 3: commit `259d33a` saved and deployed publicly. Production HTML and the new `index-B9hOq4R0.js` returned 200; required concise phrases were present, removed phrases and em dashes were absent, and the unconfigured intake endpoint returned the expected user-facing error.
 - Production email configuration on July 15: created the domain-restricted, sending-only Resend key `Mian Capital Sites`; saved `RESEND_API_KEY` as a Sites secret and `INTAKE_FROM_EMAIL` as a runtime variable. Sites environment revision advanced to 1, and version 3 was redeployed successfully as deployment `appgdep_6a571f72cdd48191b08519d180db4347` with `env_set_revision: 1`.
 - End-to-end production intake test: `POST /api/intake` returned `HTTP 200` with `{"ok":true}`; Resend API logs returned 200 and the email dashboard marked the test message `Delivered` to `wlmian31@gmail.com`.
+- Latest copy refinement: changed the sample report heading from `Screening summary` to `Shariah screening summary`; removed `A short introduction. No commitment required.` and its unused CSS. `npm run format:check`, `npm run build`, and `git diff --check` passed.
 - Fresh headed-browser QA at `1440x1000` and `390x844` — home, journey, report, Team, navigation, sticky header, mobile menu, intake default/success/error states, and footer rendered correctly.
 - Fresh console QA — 0 errors and 0 warnings during normal navigation. The only observed error was the intentional mocked `502` used to verify the recovery state.
 - Overflow QA — desktop `1425/1425` and mobile `375/375`; no horizontal overflow. Shader/canvas node count is zero.
@@ -81,6 +83,7 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 ## Next Steps Checklist
 
 - Review the redesign visually and collect any preference-level refinements.
+- Select one of the three proposed replacement logo directions before changing the brand component.
 - Replace the Team placeholder with supplied founder content and photography.
 - Complete legal/compliance review before launch.
 

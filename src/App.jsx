@@ -188,9 +188,6 @@ function Hero({ onOpenInquiry }) {
             <ArrowIcon />
           </a>
         </div>
-        <p className="hero-reassurance">
-          A short introduction. No commitment required.
-        </p>
       </div>
       <div className="hero-document" aria-label="Sample investment review">
         <ReviewDocument />
@@ -330,7 +327,7 @@ function FullReport() {
       </div>
       <div className="full-report-heading">
         <p>Portfolio review</p>
-        <h3>Screening summary</h3>
+        <h3>Shariah screening summary</h3>
       </div>
       <div className="report-table">
         <div className="report-table-heading">

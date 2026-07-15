@@ -367,12 +367,6 @@ svg {
   opacity: 0.62;
 }
 
-.hero-reassurance {
-  margin: 15px 0 0;
-  color: var(--muted);
-  font-size: 12px;
-}
-
 .hero-document {
   position: relative;
   z-index: 2;
