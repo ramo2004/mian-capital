@@ -2,7 +2,7 @@
 
 ## Goal + Current Status
 
-Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand, then deploy it publicly with ChatGPT Sites. The concise-copy pass is live as Sites version 3 at `https://mian-capital-advisory.omarimian.chatgpt.site` from commit `259d33a`: `Our approach` leads directly into step 01, redundant report copy is removed, and shipped source contains no em dashes. Local desktop/mobile QA and production asset/copy checks pass. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
+Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand, then deploy it publicly with ChatGPT Sites. The concise-copy pass and production intake email are live at `https://mian-capital-advisory.omarimian.chatgpt.site` from Sites version 3 / commit `259d33a`; desktop/mobile QA, production asset/copy checks, and end-to-end Resend delivery pass. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
 
 ## Key Decisions
 
@@ -27,7 +27,7 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 
 - Project root: `/Users/omarmian/dev/islamic finance`.
 - Node `v24.15.0`, npm `11.12.1`, Vite `8.0.16`, React `19.2.7`.
-- Production email requires `RESEND_API_KEY` and `INTAKE_FROM_EMAIL`; `.env.example` documents them.
+- Production email uses a dedicated sending-only Resend key restricted to the verified `mail.lanternnav.com` domain. Sites stores `RESEND_API_KEY` as a secret and `INTAKE_FROM_EMAIL` as `Mian Capital <intake@mail.lanternnav.com>`; no secret value is stored in the repo.
 - Local Vite does not run `/api/intake`. Browser success/error states were verified with mocked responses; the handler logic remains serverless/Vercel-compatible.
 - No GitHub Actions workflows are configured for `ramo2004/mian-capital`.
 
@@ -61,13 +61,14 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 - Concise-copy QA: requested phrases and em dashes are absent from shipped source; headed Chromium at desktop and mobile confirmed the new journey/report flow, 0 console errors, and mobile width `375/375` with no overflow.
 - Missing Sites email configuration now returns the user-facing `We couldn't send your request.` while preserving the direct-email fallback instead of exposing internal configuration wording.
 - Sites version 3: commit `259d33a` saved and deployed publicly. Production HTML and the new `index-B9hOq4R0.js` returned 200; required concise phrases were present, removed phrases and em dashes were absent, and the unconfigured intake endpoint returned the expected user-facing error.
+- Production email configuration on July 15: created the domain-restricted, sending-only Resend key `Mian Capital Sites`; saved `RESEND_API_KEY` as a Sites secret and `INTAKE_FROM_EMAIL` as a runtime variable. Sites environment revision advanced to 1, and version 3 was redeployed successfully as deployment `appgdep_6a571f72cdd48191b08519d180db4347` with `env_set_revision: 1`.
+- End-to-end production intake test: `POST /api/intake` returned `HTTP 200` with `{"ok":true}`; Resend API logs returned 200 and the email dashboard marked the test message `Delivered` to `wlmian31@gmail.com`.
 - Fresh headed-browser QA at `1440x1000` and `390x844` — home, journey, report, Team, navigation, sticky header, mobile menu, intake default/success/error states, and footer rendered correctly.
 - Fresh console QA — 0 errors and 0 warnings during normal navigation. The only observed error was the intentional mocked `502` used to verify the recovery state.
 - Overflow QA — desktop `1425/1425` and mobile `375/375`; no horizontal overflow. Shader/canvas node count is zero.
 
 ## Current Blockers / Unknowns
 
-- Production form delivery is not configured in Sites because `RESEND_API_KEY` and `INTAKE_FROM_EMAIL` have not been supplied; the UI preserves the submission and presents the direct-email fallback on failure.
 - Before launch, the user must supply the founder's name, professional biography, credentials, and portrait.
 - Advisory and Shariah-screening language should receive appropriate legal/compliance review before production use.
 
@@ -79,10 +80,9 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 
 ## Next Steps Checklist
 
-- Configure `RESEND_API_KEY` and `INTAKE_FROM_EMAIL` in Sites, redeploy the approved version, and verify one real intake submission when the user has the credentials ready.
 - Review the redesign visually and collect any preference-level refinements.
 - Replace the Team placeholder with supplied founder content and photography.
-- Complete legal/compliance review and production email configuration before launch.
+- Complete legal/compliance review before launch.
 
 ## Verification Plan
 
