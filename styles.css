@@ -133,8 +133,32 @@ svg {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 15px;
+  gap: 11px;
   width: max-content;
+}
+
+.brand-mark {
+  width: 39px;
+  height: 39px;
+  flex: 0 0 auto;
+  fill: none;
+  overflow: visible;
+}
+
+.brand-mark-c,
+.brand-mark-m {
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+.brand-mark-c {
+  stroke: var(--gold);
+  stroke-width: 2;
+}
+
+.brand-mark-m {
+  stroke: var(--ink);
+  stroke-width: 2.3;
 }
 
 .brand-name {
@@ -143,12 +167,6 @@ svg {
   font-size: 27px;
   line-height: 1;
   letter-spacing: -0.035em;
-}
-
-.brand-rule {
-  width: 34px;
-  height: 1px;
-  background: var(--gold);
 }
 
 .desktop-nav {
@@ -1346,8 +1364,9 @@ svg {
     font-size: 23px;
   }
 
-  .brand-rule {
-    width: 24px;
+  .brand-mark {
+    width: 34px;
+    height: 34px;
   }
 
   .section-space {

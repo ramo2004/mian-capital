@@ -52,8 +52,14 @@ function ArrowIcon() {
 function Brand() {
   return (
     <a className="brand" href="/" aria-label="Mian Capital home">
+      <svg className="brand-mark" viewBox="0 0 46 46" aria-hidden="true">
+        <path
+          className="brand-mark-c"
+          d="M38.5 13.5C35 9.4 29.9 7.2 24.4 7.2C14.7 7.2 7.5 14.2 7.5 23S14.7 38.8 24.4 38.8c5.5 0 10.6-2.2 14.1-6.3"
+        />
+        <path className="brand-mark-m" d="M9.5 36V11L23 28.5 36.5 11v25" />
+      </svg>
       <span className="brand-name">Mian Capital</span>
-      <span className="brand-rule" aria-hidden="true" />
     </a>
   );
 }

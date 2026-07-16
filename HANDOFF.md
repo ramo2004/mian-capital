@@ -2,15 +2,14 @@
 
 ## Goal + Current Status
 
-Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand, then deploy it publicly with ChatGPT Sites. Sites version 4 is live at `https://mian-capital-advisory.omarimian.chatgpt.site`: the sample report now says `Shariah screening summary`, the hero reassurance sentence is removed, and production email remains configured. A replacement for the wordmark-and-rule brand treatment is awaiting the user's choice among three proposed logo directions. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
+Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand, then deploy it publicly with ChatGPT Sites. Sites version 4 remains live while a new code-native `MC` ligature is complete and visually verified locally for the next release. Production intake delivery works, but its sender domain must be replaced because the previously reused LanternNav domain belongs to another project. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
 
 ## Key Decisions
 
 - The previous site is safely stored on GitHub at commit `25e102b` and annotated tag `pre-calm-premium-redesign-2026-07-12`.
 - Replaced the mixed neo-brutalist/fintech styling with an ivory, navy, muted olive, and restrained gold editorial system inspired by the approved first mockup.
 - Removed the WebGL shader, Three/R3F dependencies, and generated journey images. The hero atmosphere is now lightweight CSS linework and tonal washes.
-- Replaced the animated sticker-like logo with a quiet serif `Mian Capital` wordmark and static gold rule.
-- The current gold line is only a decorative wordmark rule, not a standalone logo symbol. Do not replace it until the user chooses a new logo direction.
+- Replaced the wordmark's decorative gold rule with the user-approved `MC` ligature: a navy `M` interlocked with a muted-gold `C`, paired with the full serif wordmark and mirrored in the favicon.
 - Reframed the primary CTA as `Request an introductory call`; retained concise reassurance and avoided adding speculative marketing sections.
 - Rebuilt the hero, journey, and holdings review around code-native advisory documents rather than dashboards or decorative imagery.
 - The report uses illustrative holding categories and explicit sample labels rather than unsupported compliance percentages or claims about real securities.
@@ -28,7 +27,7 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 
 - Project root: `/Users/omarmian/dev/islamic finance`.
 - Node `v24.15.0`, npm `11.12.1`, Vite `8.0.16`, React `19.2.7`.
-- Production email uses a dedicated sending-only Resend key restricted to the verified `mail.lanternnav.com` domain. Sites stores `RESEND_API_KEY` as a secret and `INTAKE_FROM_EMAIL` as `Mian Capital <intake@mail.lanternnav.com>`; no secret value is stored in the repo.
+- Production email currently uses a dedicated sending-only Resend key restricted to `mail.lanternnav.com`. This domain belongs to another user project and is not acceptable as the permanent Mian Capital sender. Switching requires a Mian-owned domain to be added and DNS-verified in Resend; do not substitute another unrelated domain. No secret value is stored in the repo.
 - Local Vite does not run `/api/intake`. Browser success/error states were verified with mocked responses; the handler logic remains serverless/Vercel-compatible.
 - No GitHub Actions workflows are configured for `ramo2004/mian-capital`.
 
@@ -66,12 +65,14 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 - End-to-end production intake test: `POST /api/intake` returned `HTTP 200` with `{"ok":true}`; Resend API logs returned 200 and the email dashboard marked the test message `Delivered` to `wlmian31@gmail.com`.
 - Latest copy refinement: changed the sample report heading from `Screening summary` to `Shariah screening summary`; removed `A short introduction. No commitment required.` and its unused CSS. `npm run format:check`, `npm run build`, and `git diff --check` passed.
 - Sites version 4: commit `fd8ee8e` pushed to GitHub and the Sites source mirror, saved as version 4, and deployed successfully as `appgdep_6a5722f672708191af8d1ed3e07080a2` with email environment revision 1. Production asset `index-DR8JE-my.js` contains the new Shariah heading and not the removed sentence; `GET /api/intake` still returns the expected 405 JSON response.
+- `MC` logo QA: formatting/build/diff checks passed. Playwright at `1440x900` and `390x844` confirmed the custom mark in header/footer, no old rule, zero console errors/warnings, and mobile width `390/390` with no overflow.
 - Fresh headed-browser QA at `1440x1000` and `390x844` — home, journey, report, Team, navigation, sticky header, mobile menu, intake default/success/error states, and footer rendered correctly.
 - Fresh console QA — 0 errors and 0 warnings during normal navigation. The only observed error was the intentional mocked `502` used to verify the recovery state.
 - Overflow QA — desktop `1425/1425` and mobile `375/375`; no horizontal overflow. Shader/canvas node count is zero.
 
 ## Current Blockers / Unknowns
 
+- A Mian Capital-owned sending domain and DNS access are required to remove LanternNav from the production sender address without breaking delivery.
 - Before launch, the user must supply the founder's name, professional biography, credentials, and portrait.
 - Advisory and Shariah-screening language should receive appropriate legal/compliance review before production use.
 
@@ -84,7 +85,7 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 ## Next Steps Checklist
 
 - Review the redesign visually and collect any preference-level refinements.
-- Select one of the three proposed replacement logo directions before changing the brand component.
+- Add and verify a Mian Capital-owned Resend domain, then replace `INTAKE_FROM_EMAIL` and the domain-restricted API key.
 - Replace the Team placeholder with supplied founder content and photography.
 - Complete legal/compliance review before launch.
 
