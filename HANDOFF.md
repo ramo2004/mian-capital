@@ -2,7 +2,7 @@
 
 ## Goal + Current Status
 
-Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand, then deploy it publicly with ChatGPT Sites. Sites version 4 remains live while a new code-native `MC` ligature is complete and visually verified locally for the next release. Production intake delivery works, but its sender domain must be replaced because the previously reused LanternNav domain belongs to another project. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
+Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand, then deploy it publicly with ChatGPT Sites. Sites version 5 is live with the new code-native `MC` ligature and matching favicon. Production intake delivery works, but its sender domain must be replaced because the previously reused LanternNav domain belongs to another project. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
 
 ## Key Decisions
 
@@ -66,6 +66,8 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 - Latest copy refinement: changed the sample report heading from `Screening summary` to `Shariah screening summary`; removed `A short introduction. No commitment required.` and its unused CSS. `npm run format:check`, `npm run build`, and `git diff --check` passed.
 - Sites version 4: commit `fd8ee8e` pushed to GitHub and the Sites source mirror, saved as version 4, and deployed successfully as `appgdep_6a5722f672708191af8d1ed3e07080a2` with email environment revision 1. Production asset `index-DR8JE-my.js` contains the new Shariah heading and not the removed sentence; `GET /api/intake` still returns the expected 405 JSON response.
 - `MC` logo QA: formatting/build/diff checks passed. Playwright at `1440x900` and `390x844` confirmed the custom mark in header/footer, no old rule, zero console errors/warnings, and mobile width `390/390` with no overflow.
+- Sites version 5: commit `c9e1eec` pushed to GitHub and the Sites source mirror, saved as version 5, and deployed successfully as `appgdep_6a595dd1bfa88191b5a8518e7c2b8366` with email environment revision 1. Production serves `index-X52SraLk.js` and `index-CoKpYFrB.css`; the new logo selectors are present and `GET /api/intake` still returns the expected 405 response.
+- Post-push CI query: `gh workflow list` returned no configured workflows. Two `gh run list` attempts returned GitHub API HTTP 503, so no run-level result was available; this does not block the direct build and production verification.
 - Fresh headed-browser QA at `1440x1000` and `390x844` — home, journey, report, Team, navigation, sticky header, mobile menu, intake default/success/error states, and footer rendered correctly.
 - Fresh console QA — 0 errors and 0 warnings during normal navigation. The only observed error was the intentional mocked `502` used to verify the recovery state.
 - Overflow QA — desktop `1425/1425` and mobile `375/375`; no horizontal overflow. Shader/canvas node count is zero.
