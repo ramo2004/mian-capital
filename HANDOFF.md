@@ -2,6 +2,8 @@
 
 ## Goal + Current Status
 
+Latest request: ensure the complete website is on GitHub under `ramo2004`. The existing public repository is `https://github.com/ramo2004/mian-capital`; all website source and assets were already synchronized on `main`. October 25 verification passed formatting and production build; only this handoff update is new.
+
 Redesign Mian Capital in the approved calm premium advisory direction while keeping the site concise and easy to understand, then deploy it publicly with ChatGPT Sites. Sites version 5 is live with the new code-native `MC` ligature and matching favicon. Production intake delivery works, but its sender domain must be replaced because the previously reused LanternNav domain belongs to another project. The prior design remains recoverable from tag `pre-calm-premium-redesign-2026-07-12`.
 
 ## Key Decisions
@@ -30,6 +32,7 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 - Production email currently uses a dedicated sending-only Resend key restricted to `mail.lanternnav.com`. This domain belongs to another user project and is not acceptable as the permanent Mian Capital sender. Switching requires a Mian-owned domain to be added and DNS-verified in Resend; do not substitute another unrelated domain. No secret value is stored in the repo.
 - Local Vite does not run `/api/intake`. Browser success/error states were verified with mocked responses; the handler logic remains serverless/Vercel-compatible.
 - No GitHub Actions workflows are configured for `ramo2004/mian-capital`.
+- On October 25, `/usr/bin/git` was blocked by the Xcode license prompt. Prefix Git commands with `DEVELOPER_DIR=/Library/Developer/CommandLineTools` to use the working installed command-line tools. GitHub CLI is authenticated as `ramo2004`.
 
 ## Files Touched
 
@@ -67,7 +70,7 @@ Redesign Mian Capital in the approved calm premium advisory direction while keep
 - Sites version 4: commit `fd8ee8e` pushed to GitHub and the Sites source mirror, saved as version 4, and deployed successfully as `appgdep_6a5722f672708191af8d1ed3e07080a2` with email environment revision 1. Production asset `index-DR8JE-my.js` contains the new Shariah heading and not the removed sentence; `GET /api/intake` still returns the expected 405 JSON response.
 - `MC` logo QA: formatting/build/diff checks passed. Playwright at `1440x900` and `390x844` confirmed the custom mark in header/footer, no old rule, zero console errors/warnings, and mobile width `390/390` with no overflow.
 - Sites version 5: commit `c9e1eec` pushed to GitHub and the Sites source mirror, saved as version 5, and deployed successfully as `appgdep_6a595dd1bfa88191b5a8518e7c2b8366` with email environment revision 1. Production serves `index-X52SraLk.js` and `index-CoKpYFrB.css`; the new logo selectors are present and `GET /api/intake` still returns the expected 405 response.
-- Post-push CI query: `gh workflow list` returned no configured workflows. Two `gh run list` attempts returned GitHub API HTTP 503, so no run-level result was available; this does not block the direct build and production verification.
+- October 25 GitHub verification: `gh repo view`, `git ls-remote`, and local HEAD confirmed the existing public `ramo2004/mian-capital` repository and synchronized `main` at `8102949` before the handoff update. `npm run format:check`, `npm run build`, and `git diff --check` passed. `gh workflow list` and `gh run list` succeeded with no workflows or runs.
 - Fresh headed-browser QA at `1440x1000` and `390x844` — home, journey, report, Team, navigation, sticky header, mobile menu, intake default/success/error states, and footer rendered correctly.
 - Fresh console QA — 0 errors and 0 warnings during normal navigation. The only observed error was the intentional mocked `502` used to verify the recovery state.
 - Overflow QA — desktop `1425/1425` and mobile `375/375`; no horizontal overflow. Shader/canvas node count is zero.
